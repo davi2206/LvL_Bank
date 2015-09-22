@@ -6,6 +6,7 @@ V0.4
 - Spelling corrected from depositd to deposited in message to player
 - Minor bug fixes
 - Added 'Max allowed balance' feature
+- Added max allowed balance for players when withdrawing
 
 
 V0.3.3
