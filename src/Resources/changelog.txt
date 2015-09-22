@@ -1,0 +1,58 @@
+** CHANGELOG **
+V0.4
+- Cleaned up code
+- Disallowed Deposit and Withdraw signs to be higher than max or lover than min values, on creation
+- Disallowed min values to be higher than max values, in config
+- Spelling corrected from depositd to deposited in message to player
+- Minor bug fixes
+- Added 'Max allowed balance' feature
+
+
+V0.3.3
+- Added changelog file
+- Added Donators file
+- Added donation options:
+	- PayPal
+	- Fiverr
+- Added permission: 'LvL.signBreak' (Access to break LvL Bank sings)
+- Changed '/lvldeposit' and '/lvlwithdraw' to automatically scale down to the maximum number of levels to deposit/withdraw, rather than disallow the transaction, when a player has too many levels
+- Changed 'All' on signs to 'Max'
+	- Changed syntax in guide
+
+V0.3.2
+- Allowed to put 'all' on withdraw and deposit signs
+- Disallow creation of half signs (Writing '[lvl bank]' on line one and 'blah' on line 2)
+- Updated config
+
+V0.3.1
+- Fixed spelling from 'deposite' to 'deposit'
+- Fixed minor bugs
+
+V0.3
+- Commands:
+	- Added command '/lvlBalance <player> [world]'
+	- Fixed command '/lvlreload' bug
+	- Added message to sender on reload
+	- Added and changed colors of messages
+- Permissions:
+	- Removed permission: 'LvL.Admin' (Use 'LvL.*' as replacement)
+	- Added permission: 'LvL.reload' (Access to reload plugin)
+	- Added permission: 'LvL.other' (Access to see other players accounts)
+	- Added min and max deposit/withdraw values
+- Fixed depositing/withdrawing negative amounts bug
+- Changed sign syntax
+	- Not less cluttered as planned, but makes more sense, and has more information and color
+	- Added min/max deposit and withdraw amounts to signs for usability
+	- Made signs not case sensitive (When placed)
+	- Changed '-1' values on signs to configurable string (Default: '-')
+- Allowed Console to use '/lvlBalance <player> [world]'
+- Fixed bug with no database connection (Deposited amounts will no longer be lost)
+- Small bug fixes
+- ! Changed Config !
+	- Old config must be DELETED and an updated version will be created on server reload/restart
+	- Commented stuff will be implemented in the future, and has no use at the moment
+
+V0.2
+- Added comment in Config
+- Made Excluded_Worlds actually Excluded
+- Before they were just another group

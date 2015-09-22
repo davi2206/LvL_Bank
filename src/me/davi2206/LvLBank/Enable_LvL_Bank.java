@@ -1,0 +1,75 @@
+package me.davi2206.LvLBank;
+
+import java.sql.Connection;
+
+import managers.BankManagement;
+import managers.Commands;
+import managers.SignManager;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import Connection.DbConnection;
+import creators.GenerateFiles;
+
+public class Enable_LvL_Bank extends JavaPlugin implements Listener
+{
+	private static DbConnection dbCon;
+	private Connection con;
+	private Commands cmds;
+	
+	private SignManager signManager;
+	private BankManagement bm;
+	private GenerateFiles genFiles;
+	
+	private ConsoleCommandSender clog;
+	private Plugin plugin;
+	
+	public void onEnable()
+	{
+		plugin = this;
+		clog = this.getServer().getConsoleSender();
+		clog.sendMessage(ChatColor.BLUE + "LvL_Bank enabeling!");
+		
+		genFiles = new GenerateFiles(this);
+		genFiles.generateConfig();
+		genFiles.generateChangelog();
+		genFiles.generateDonators();
+		
+		dbCon = DbConnection.getInstance(this);
+		con = dbCon.openConnection();
+		
+		signManager = SignManager.getInstance(con, this);
+		bm = BankManagement.getInstance(con, this);
+		cmds = Commands.getInstance();
+		
+		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
+		
+		cmds.checkMinMaxValues(plugin, clog);
+		
+		clog.sendMessage(ChatColor.GREEN + "LvL_Bank enabeled!");
+	}
+
+	//Receiving command input
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
+	{
+		//Sending Command handling to separate class to uncluster the plugin Main class
+		cmds.doCommands(this, bm, sender, cmd, commandLabel, args);
+
+		return true;
+	}
+	
+	public void onDisable()
+	{
+		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><> \n");
+		clog.sendMessage(ChatColor.RED + "Disabling LvL_Bank \n");
+		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><>");
+	}
+}

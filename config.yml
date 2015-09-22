@@ -1,0 +1,63 @@
+# # # # # # # # # # # # #
+#  --    LvL Bank    -- #
+#  --  Version: 0.3  -- #
+#  --  By: Davi2206  -- #
+# # # # # # # # # # # # #
+
+# Default SQL values
+MySQL:
+  SQL_IP: localHost
+  SQL_Port: '3306'
+  SQL_Database_Name: someDatabase
+  SQL_User_Name: JohnDoe
+  SQL_Password: SomeSuperSecretPasswordThatYouWillNeverGuess5
+
+# Default World Groups
+# The world groups are used to control which worlds share level accounts
+# Pr. default you have the same level account for the regular world and 
+# its nether and end world, as well as one account for skyworld and the connected sky-nether and sky-end world
+# Excluded_Worlds do not have a banking system (They are excluded..)
+# Worlds not defined here will default to Excluded_Worlds
+# NOTE: world names are case sensitive!
+World_Groups:
+  Excluded_Worlds:
+    '1': no_world
+  Group_1:
+    '1': world
+    '2': world_nether
+    '3': world_the_end
+  Group_2:
+    '1': skyworld
+    '2': skyworld_nether
+    '3': skyworld_the_end
+  Group_3:
+    '1': plotworld
+
+# Default account limits
+# Set value at -1 for unlimited. Use 'Sign_For_Unlimited' to define the character to display on signs instead of '-1'
+# If the Min values are higher than the Max values the plugin will be disabled
+Account_Limits:
+  Min_Deposit: 5
+  Max_Deposit: 10
+  Min_Withdraw: 1
+  Max_Withdraw: 10
+  Sign_For_Unlimited: '-'
+  Max_Account_Balance: 9001
+
+# The maximum amount of levels a player can withdraw up to
+# Use '-1' for unlimited
+Player_Limits:
+  Max_Player_Level: 30
+
+## Bank fees:
+## When using Vault the fee is a cash amount
+## When NOT using Vault the fee is a Level amount
+## Dynamic_Fees means the fee specified is a percentage of the amount depositd/withdrawn, rather than the amount of levels
+## So if Dynamic_Fees is true, and the fee is 20 for deposit and the player deposits 20 levels, the fee will be 20% of 20 Levels = 4 levels
+## Fees are taken from the players account. If there is not enough levels, the fees will be taken from the player. If there is still not enough the transaction will be canceled
+#Bank_Fees:
+#  Use_Bank_Fees: true
+#  Use_Vault: false
+#  Dynamic_Fees: true
+#  Deposit_Fee: 10
+#  Withdraw_Fee: 20

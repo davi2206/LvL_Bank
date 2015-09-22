@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="Resources/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/Resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/craftbukkit_server.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/PermissionsEx.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/PermissionsEx-1.23.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/worldedit-bukkit-6.0.2-SNAPSHOT-dist.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/worldguard-6.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/Essentials-2.x-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/EssentialsSpawn-2.x-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/David/workspace/BuildPaths/Multiverse-Core-2.5.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
