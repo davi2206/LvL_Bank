@@ -15,6 +15,7 @@ public class Commands
 
 	private Commands()
 	{
+		//All commands handled in this class
 	}
 
 	public static Commands getInstance()
