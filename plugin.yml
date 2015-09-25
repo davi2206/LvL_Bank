@@ -3,15 +3,7 @@ version: 1.0_Beta
 main: me.davi2206.LvLBank.Enable_LvL_Bank
 
 commands:
-    lvlReload:
+    lvlBank:
         usage: /<command>
-        description: Reload plugin
-    lvlDeposit:
-        usage: /<command>
-        description: Deposit EXP (amount)
-    lvlWithdraw:
-        usage: /<command>
-        description: Withdraw EXP (amount)
-    lvlBalance:
-        usage: /<command>
-        description: Show available EXP in your account
+        description: Handels all LvL_Bank commands
+        aliases: [lvl, lvl_bank]

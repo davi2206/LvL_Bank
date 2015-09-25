@@ -337,6 +337,52 @@ public class BankManagement
 		return lvlFromDb;
 	}
 
+	public int getBalance(Player player, String world)
+	{
+	// XXX getBalance(Player player, String world)
+	playerName = player.getName();
+	this.world = world;
+	group = getGroup(world);
+
+	if(!validConnection(player))
+	{
+		return (-9001);
+	}
+	
+	if (!reg.isRegistered(playerName))
+	{
+		return (-1);
+	}
+
+	if (group.equals("Excluded_Worlds"))
+	{
+		itIsExcluded(player);
+		return (-2);
+	}
+
+	String queryGetBalance = "SELECT " + group
+			+ " FROM lvl_bank_accounts WHERE playerName = '" + playerName
+			+ "';";
+	int lvlFromDb = 0;
+
+	try
+	{
+		PreparedStatement getBalance = con
+				.prepareStatement(queryGetBalance);
+		ResultSet rs = getBalance.executeQuery();
+		while (rs.next())
+		{
+			lvlFromDb = rs.getInt(group);
+		}
+	}
+	catch (SQLException e)
+	{
+		e.printStackTrace();
+	}
+
+	return lvlFromDb;
+}
+
 	public int getBalance(Player sender, String player, String world)
 	{
 		// XXX getBalance(Player sender, String player, String world)
