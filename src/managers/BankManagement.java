@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -339,51 +340,51 @@ public class BankManagement
 
 	public int getBalance(Player player, String world)
 	{
-	// XXX getBalance(Player player, String world)
-	playerName = player.getName();
-	this.world = world;
-	group = getGroup(world);
-
-	if(!validConnection(player))
-	{
-		return (-9001);
-	}
+		// XXX getBalance(Player player, String world)
+		playerName = player.getName();
+		this.world = world;
+		group = getGroup(world);
 	
-	if (!reg.isRegistered(playerName))
-	{
-		return (-1);
-	}
-
-	if (group.equals("Excluded_Worlds"))
-	{
-		itIsExcluded(player);
-		return (-2);
-	}
-
-	String queryGetBalance = "SELECT " + group
-			+ " FROM lvl_bank_accounts WHERE playerName = '" + playerName
-			+ "';";
-	int lvlFromDb = 0;
-
-	try
-	{
-		PreparedStatement getBalance = con
-				.prepareStatement(queryGetBalance);
-		ResultSet rs = getBalance.executeQuery();
-		while (rs.next())
+		if(!validConnection(player))
 		{
-			lvlFromDb = rs.getInt(group);
+			return (-9001);
 		}
-	}
-	catch (SQLException e)
-	{
-		e.printStackTrace();
+		
+		if (!reg.isRegistered(playerName))
+		{
+			return (-1);
+		}
+	
+		if (group.equals("Excluded_Worlds"))
+		{
+			itIsExcluded(player);
+			return (-2);
+		}
+	
+		String queryGetBalance = "SELECT " + group
+				+ " FROM lvl_bank_accounts WHERE playerName = '" + playerName
+				+ "';";
+		int lvlFromDb = 0;
+	
+		try
+		{
+			PreparedStatement getBalance = con
+					.prepareStatement(queryGetBalance);
+			ResultSet rs = getBalance.executeQuery();
+			while (rs.next())
+			{
+				lvlFromDb = rs.getInt(group);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	
+		return lvlFromDb;
 	}
 
-	return lvlFromDb;
-}
-
-	public int getBalance(Player sender, String player, String world)
+	public int getBalance(CommandSender sender, String player, String world)
 	{
 		// XXX getBalance(Player sender, String player, String world)
 		playerName = player;
@@ -555,14 +556,14 @@ public class BankManagement
 		return "Excluded_Worlds";
 	}
 
-	public void itIsExcluded(Player player)
+	public void itIsExcluded(CommandSender sender)
 	{
 		// XXX itIsExcluded(Player player)
-		player.sendMessage(ChatColor.RED
+		sender.sendMessage(ChatColor.RED
 				+ "The world you are requesting is excluded from the LvL Banking system!");
 	}
 	
-	public boolean validConnection(Player player)
+	public boolean validConnection(CommandSender player)
 	{
 		try
 		{
