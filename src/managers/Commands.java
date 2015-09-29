@@ -113,6 +113,32 @@ public class Commands
 						return true;
 					}
 				}
+				else if(arguments[0].equalsIgnoreCase("Limits"))
+				{
+					String minDep = plugin.getConfig().getString(
+							"Account_Limits.Min_Deposit");
+					player.sendMessage(ChatColor.BLUE + "Min deposit: " + ChatColor.GREEN + minDep);
+					
+					String maxDep = plugin.getConfig().getString(
+							"Account_Limits.Max_Deposit");
+					player.sendMessage(ChatColor.BLUE + "Max deposit: " + ChatColor.GREEN + maxDep);
+					
+					String minWit = plugin.getConfig().getString(
+							"Account_Limits.Min_Withdraw");
+					player.sendMessage(ChatColor.YELLOW + "Min withdraw: " + ChatColor.GREEN + minWit);
+					
+					String maxWit = plugin.getConfig().getString(
+							"Account_Limits.Max_Withdraw");
+					player.sendMessage(ChatColor.YELLOW + "Max withdraw: " + ChatColor.GREEN + maxWit);
+					
+					String maxBal = plugin.getConfig().getString(
+							"Account_Limits.Max_Account_Balance");
+					player.sendMessage(ChatColor.DARK_GREEN + "Max balance: " + ChatColor.GREEN + maxBal);
+					
+					String maxPlLvl = plugin.getConfig().getString(
+							"Player_Limits.Max_Player_Level");
+					player.sendMessage(ChatColor.DARK_GREEN + "Max player level: " + ChatColor.GREEN + maxPlLvl);
+				}
 			}
 			//XXX Two arguments
 			else if(args == 2)
