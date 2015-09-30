@@ -61,9 +61,13 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) 
 	{
 		//Sending Command handling to separate class to uncluster the plugin Main class
-		cmds.doCommands(this, bm, sender, cmd, commandLabel, args);
+		if(sender.hasPermission(new Permissions().lvlBankCommands))
+		{
+			cmds.doCommands(this, bm, sender, cmd, commandLabel, args);
+			return true;
+		}
 
-		return true;
+		return false;
 	}
 	
 	public void onDisable()

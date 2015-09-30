@@ -7,6 +7,8 @@ V0.4
 - Minor bug fixes
 - Added 'Max allowed balance' feature
 - Added max allowed balance for players when withdrawing
+- Changed Command syntax (Every action is now an argument to the '/lvlBank' command)
+- 
 
 
 V0.3.3

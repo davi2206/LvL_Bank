@@ -12,11 +12,13 @@ public class Commands
 {
 	private Player player;
 	private static Commands cmds;
-
+	private int args;
+	
 	private Commands()
 	{
+		
 	}
-
+	
 	public static Commands getInstance()
 	{
 		if (cmds == null)
@@ -29,130 +31,62 @@ public class Commands
 	// Handeling all commands
 	public boolean doCommands(Plugin plugin, BankManagement bm,
 			CommandSender sender, Command cmd, String commandLabel,
-			String[] args)
+			String[] arguments)
 	{
-		//XXX Command Reload
-		if (cmd.getName().equalsIgnoreCase("lvlReload")
-				&& sender.hasPermission(new Permissions().lvlBankReload))
-		{
-			plugin.reloadConfig();
-			sender.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");
-			checkMinMaxValues(plugin, sender);
-		}
-		else if (cmd.getName().equalsIgnoreCase("lvlReload")
-				&& !sender.hasPermission(new Permissions().lvlBankReload))
-		{
-			sender.sendMessage(ChatColor.RED + "You do not have permission to perform this command!");
-		}
-
 		boolean isPlayer = false;
 
 		// Check if Command Sender is a Player
 		if (sender instanceof Player)
 		{
 			player = (Player) sender;
-
 			isPlayer = true;
 		}
-
-		//XXX Command deposit
-		if (cmd.getName().equalsIgnoreCase("lvldeposit"))
+		
+		args = arguments.length;
+		
+		//If lvl bank command
+		if(cmd.getName().equalsIgnoreCase("lvlBank"))
 		{
-			if (!isPlayer)
+			//XXX One argument
+			if(args == 1)
 			{
-				sender.sendMessage(ChatColor.RED
-						+ "Only players can use this command");
-				return true;
-			}
-
-			// deposit all
-			if (args.length == 0
-					&& (player.hasPermission(new Permissions().lvlBankCommands)))
-			{
-				bm.deposit(player);
-			}
-
-			// deposit amount
-			else if (args.length > 0
-					&& (player.hasPermission(new Permissions().lvlBankCommands)))
-			{
-				int amount = 0;
-				try
+				//XXX Reload
+				if(arguments[0].equalsIgnoreCase("reload"))
 				{
-					amount = Integer.parseInt(args[0]);
+					if(sender.hasPermission(new Permissions().lvlBankReload))
+					{
+						plugin.reloadConfig();
+						sender.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");
+						checkMinMaxValues(plugin, sender);
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.RED + "You do not have permission to reload this plugin!");
+					}
 				}
-				catch (Exception e)
+				//XXX Deposit all (max)
+				else if(arguments[0].equalsIgnoreCase("deposit"))
 				{
-					player.sendMessage("The amount has to be a number, lower than or equal to the amount of levels you have");
-					return true;
+					if (!isPlayer)
+					{
+						sender.sendMessage(ChatColor.RED
+								+ "Only players can use this command");
+						return true;
+					}
+					bm.deposit(player);
 				}
-
-				bm.deposit(player, amount);
-			}
-			else if (!player.hasPermission(new Permissions().lvlBankCommands))
-			{
-				player.sendMessage(ChatColor.RED + "You do not have permission to use LvL Bank commands");
-			}
-			else
-			{
-				player.sendMessage(ChatColor.RED + "For some reason that did not work.. Try again");
-			}
-		}
-
-		//XXX Command Withdraw
-		if (cmd.getName().equalsIgnoreCase("lvlWithdraw"))
-		{
-			if (!isPlayer)
-			{
-				sender.sendMessage(ChatColor.RED
-						+ "Only players can use this command");
-				return true;
-			}
-
-			// Withdraw all
-			if (args.length == 0
-					&& (player.hasPermission(new Permissions().lvlBankCommands)))
-			{
-				bm.withdraw(player);
-			}
-
-			// Withdraw amount
-			else if (args.length > 0
-					&& (player.hasPermission(new Permissions().lvlBankCommands)))
-			{
-				int amount = 0;
-				try
+				//XXX Withdraw all (max)
+				else if(arguments[0].equalsIgnoreCase("withdraw"))
 				{
-					amount = Integer.parseInt(args[0]);
+					if (!isPlayer)
+					{
+						sender.sendMessage(ChatColor.RED
+								+ "Only players can use this command");
+						return true;
+					}
+					bm.withdraw(player);
 				}
-				catch (Exception e)
-				{
-					player.sendMessage(ChatColor.RED
-							+ "The argument has to be a number, lower than or equal to the balance of your account!");
-					return true;
-				}
-
-				bm.withdraw(player, amount);
-			}
-			else if (!player.hasPermission(new Permissions().lvlBankCommands))
-			{
-				player.sendMessage(ChatColor.RED + "You do not have permission to use LvL Bank commands");
-			}
-			else
-			{
-				player.sendMessage(ChatColor.RED + "For some reason that did not work.. Try again");
-			}
-		}
-
-		//XXX Command balance
-		if (cmd.getName().equalsIgnoreCase("lvlBalance"))
-		{
-			int balance = 0;
-			
-			if (sender.hasPermission(new Permissions().lvlBankCommands))
-			{
-				// Check own balance
-				if (args.length == 0)
+				else if(arguments[0].equalsIgnoreCase("balance"))
 				{
 					if (!isPlayer)
 					{
@@ -161,6 +95,7 @@ public class Commands
 						return true;
 					}
 					
+					int balance = 0;
 					balance = bm.getBalance(player);
 					
 					if (balance > 1 || balance == 0)
@@ -178,67 +113,141 @@ public class Commands
 						return true;
 					}
 				}
-				
-				else if(sender.hasPermission(new Permissions().lvlBankOther))
+				else if(arguments[0].equalsIgnoreCase("Limits"))
 				{
-					String world = "";
-					//Check other players balance in current world
-					if(args.length == 1)
+					String minDep = plugin.getConfig().getString(
+							"Account_Limits.Min_Deposit");
+					player.sendMessage(ChatColor.BLUE + "Min deposit: " + ChatColor.GREEN + minDep);
+					
+					String maxDep = plugin.getConfig().getString(
+							"Account_Limits.Max_Deposit");
+					player.sendMessage(ChatColor.BLUE + "Max deposit: " + ChatColor.GREEN + maxDep);
+					
+					String minWit = plugin.getConfig().getString(
+							"Account_Limits.Min_Withdraw");
+					player.sendMessage(ChatColor.YELLOW + "Min withdraw: " + ChatColor.GREEN + minWit);
+					
+					String maxWit = plugin.getConfig().getString(
+							"Account_Limits.Max_Withdraw");
+					player.sendMessage(ChatColor.YELLOW + "Max withdraw: " + ChatColor.GREEN + maxWit);
+					
+					String maxBal = plugin.getConfig().getString(
+							"Account_Limits.Max_Account_Balance");
+					player.sendMessage(ChatColor.DARK_GREEN + "Max balance: " + ChatColor.GREEN + maxBal);
+					
+					String maxPlLvl = plugin.getConfig().getString(
+							"Player_Limits.Max_Player_Level");
+					player.sendMessage(ChatColor.DARK_GREEN + "Max player level: " + ChatColor.GREEN + maxPlLvl);
+				}
+			}
+			//XXX Two arguments
+			else if(args == 2)
+			{
+				//XXX Deposit amount
+				if(arguments[0].equalsIgnoreCase("deposit"))
+				{
+					if (!isPlayer)
 					{
-						if (!isPlayer)
+						sender.sendMessage(ChatColor.RED
+								+ "Only players can use this command");
+						return true;
+					}
+					
+					int amount = 0;
+					try
+					{
+						amount = Integer.parseInt(arguments[1]);
+					}
+					catch (Exception e)
+					{
+						player.sendMessage("The amount has to be a number, lower than or equal to the amount of levels you have");
+						return true;
+					}
+					
+					bm.deposit(player, amount);
+				}
+				//XXX withdraw amount
+				else if(arguments[0].equalsIgnoreCase("withdraw"))
+				{
+					if (!isPlayer)
+					{
+						sender.sendMessage(ChatColor.RED
+								+ "Only players can use this command");
+						return true;
+					}
+					
+					int amount = 0;
+					try
+					{
+						amount = Integer.parseInt(arguments[1]);
+					}
+					catch (Exception e)
+					{
+						player.sendMessage(ChatColor.RED
+								+ "The argument has to be a number, lower than or equal to the balance of your account!");
+						return true;
+					}
+
+					bm.withdraw(player, amount);
+				}
+				//XXX Balance in World
+				else if(arguments[0].equalsIgnoreCase("balance"))
+				{
+					if(player.hasPermission(new Permissions().lvlBankOther))
+					{
+						int balance = 0;
+						
+						try
 						{
-							sender.sendMessage(ChatColor.RED
-									+ "Only players can use this command");
+							balance = bm.getBalance(player, arguments[1]);
+						}
+						catch(Exception e)
+						{
+							player.sendMessage(ChatColor.RED + "There was an unexpected error. Ask an admin to check the console.");
+							e.printStackTrace();
 							return true;
 						}
-						
-						world = player.getWorld().getName();
-						String playerName = args[0];
-						
-						balance = bm.getBalance(player, playerName, world);
+						String world = player.getWorld().getName();
+						tellTheResult(sender, balance, player.getName(), world);
 					}
-					
-					//Check other players balance in specified world
-					if (args.length >= 2)
+					else
 					{
-						balance = bm.getBalance(player, args[0], args[1]);
-						world = args[1];
-					}
-					
-					//Tell the command sender the result
-					if (balance > 1 || balance == 0)
-					{
-						sender.sendMessage(ChatColor.YELLOW + args[0] + ChatColor.BLUE + " has " + ChatColor.GREEN + balance
-								+ ChatColor.BLUE + " levels in the Bank in world: " + ChatColor.YELLOW + world);
-					}
-					else if (balance == 1)
-					{
-						sender.sendMessage(ChatColor.YELLOW + args[0] + ChatColor.BLUE + " has " + ChatColor.GREEN + balance
-								+ ChatColor.BLUE + " level in the Bank in world: " + ChatColor.YELLOW + world);
-					}
-					else if (balance == (-1))
-					{
-						sender.sendMessage(ChatColor.YELLOW + args[0] + ChatColor.RED + " is not registered in the Bank!");
-					}
-					else if (balance == (-2))
-					{
-						return true;
-					}
-					else if(balance == (-9001))
-					{
-						return true;
+						sender.sendMessage(ChatColor.RED + "You do not have permission to use LvL Bank commands");
 					}
 				}
-				else if (!player.hasPermission(new Permissions().lvlBankCommands))
+			}
+			//XXX Three arguments
+			else if(args == 3)
+			{
+				int balance = -9001;
+				String world = arguments[2];
+				String player = arguments[1];
+				
+				//XXX Balance in world for player
+				if(arguments[0].equalsIgnoreCase("balance"))
 				{
-					player.sendMessage(ChatColor.RED + "You do not have permission to use LvL Bank commands");
-				}
-				else
-				{
-					player.sendMessage(ChatColor.RED + "For some reason that did not work.. Try again");
+					if(sender.hasPermission(new Permissions().lvlBankOther))
+					{
+						try
+						{
+							balance = bm.getBalance(sender, arguments[1], arguments[2]);
+						}
+						catch(Exception e)
+						{
+							sender.sendMessage(ChatColor.RED + "There was an unexpected error. Ask an admin to check the console.");
+							e.printStackTrace();
+							return true;
+						}
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.RED + "You do not have permission to use LvL Bank commands");
+					}
+					tellTheResult(sender, balance, player, world);
 				}
 			}
 		}
+		
 		return true;
 	}
 	
@@ -278,6 +287,34 @@ public class Commands
 			sender.sendMessage(ChatColor.RED + "The minimum deposit and withdraw amounts cannot be higher than the maximum amounts!");
 			sender.sendMessage(ChatColor.RED + "Plugin will be disabled");
 			plugin.getPluginLoader().disablePlugin(plugin);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean tellTheResult(CommandSender sender, int balance, String player, String world)
+	//Tell the command sender the result
+	{
+		if (balance > 1 || balance == 0)
+		{
+			sender.sendMessage(ChatColor.YELLOW + player + ChatColor.BLUE + " has " + ChatColor.GREEN + balance
+					+ ChatColor.BLUE + " levels in the Bank in world: " + ChatColor.YELLOW + world);
+		}
+		else if (balance == 1)
+		{
+			sender.sendMessage(ChatColor.YELLOW + player + ChatColor.BLUE + " has " + ChatColor.GREEN + balance
+					+ ChatColor.BLUE + " level in the Bank in world: " + ChatColor.YELLOW + world);
+		}
+		else if (balance == (-1))
+		{
+			sender.sendMessage(ChatColor.YELLOW + player + ChatColor.RED + " is not registered in the Bank!");
+		}
+		else if (balance == (-2))
+		{
+			return false;
+		}
+		else if(balance == (-9001))
+		{
 			return false;
 		}
 		return true;
