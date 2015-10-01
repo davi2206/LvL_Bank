@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 
 public class Commands
@@ -139,6 +140,14 @@ public class Commands
 							"Player_Limits.Max_Player_Level");
 					player.sendMessage(ChatColor.DARK_GREEN + "Max player level: " + ChatColor.GREEN + maxPlLvl);
 				}
+				else if(arguments[0].equalsIgnoreCase("help"))
+				{
+					cmdHelp();
+				}
+				else if(arguments[0].equalsIgnoreCase(""))
+				{
+					cmdHelp();
+				}
 			}
 			//XXX Two arguments
 			else if(args == 2)
@@ -249,6 +258,28 @@ public class Commands
 		}
 		
 		return true;
+	}
+	
+	public void cmdHelp()
+	{
+		player.sendMessage(ChatColor.BLUE + "The commands you can use are: ");
+		
+		if(player.hasPermission(new Permissions().lvlBankReload))
+		{
+			player.sendMessage(ChatColor.YELLOW + "- /lvlBank reload");
+		}
+		
+		player.sendMessage(ChatColor.YELLOW + 
+				"- /lvlBank deposit [amount] \n "
+				+ "/lvlBank withdraw [amount] \n "
+				+ "/lvlBank balance [world]");
+		
+		if(player.hasPermission(new Permissions().lvlBankOther))
+		{
+			player.sendMessage(ChatColor.YELLOW + "- /lvlBank balance <world> <player>");
+		}
+		
+		player.sendMessage(ChatColor.YELLOW + "- /lvlBank limits");
 	}
 	
 	//XXX checkMinMaxValues(Plugin plugin, ConsoleCommandSender clog)
