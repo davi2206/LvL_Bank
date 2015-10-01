@@ -6,9 +6,11 @@ V0.4
 - Spelling corrected from depositd to deposited in message to player
 - Minor bug fixes
 - Added 'Max allowed balance' feature
-- Added max allowed balance for players when withdrawing
-- Changed Command syntax (Every action is now an argument to the '/lvlBank' command)
-- 
+- Added max allowed level for players when withdrawing
+- Changed Command syntax (Every action is now an argument to the '/lvlBank' command, see the Commands section on the bukkit page)
+- Added command '/lvlBank Balance <world>'
+- Added command '/lvlBank limits'
+- !! Changed Config.yml !!
 
 
 V0.3.3
