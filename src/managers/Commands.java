@@ -207,7 +207,7 @@ public class Commands
 							e.printStackTrace();
 							return true;
 						}
-						String world = player.getWorld().getName();
+						String world = arguments[1];
 						tellTheResult(sender, balance, player.getName(), world);
 					}
 					else
