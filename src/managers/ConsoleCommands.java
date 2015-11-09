@@ -6,25 +6,25 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 
-public class Commands
+public class ConsoleCommands
 {
 	private Player player;
-	private static Commands cmds;
+	private static ConsoleCommands cmds;
 	private int args;
+	private boolean isPlayer;
 	
-	private Commands()
+	private ConsoleCommands()
 	{
 		
 	}
 	
-	public static Commands getInstance()
+	public static ConsoleCommands getInstance()
 	{
 		if (cmds == null)
 		{
-			cmds = new Commands();
+			cmds = new ConsoleCommands();
 		}
 		return cmds;
 	}
@@ -34,7 +34,8 @@ public class Commands
 			CommandSender sender, Command cmd, String commandLabel,
 			String[] arguments)
 	{
-		boolean isPlayer = false;
+		isPlayer = false;
+		player = null;
 
 		// Check if Command Sender is a Player
 		if (sender instanceof Player)
@@ -48,8 +49,13 @@ public class Commands
 		//If lvl bank command
 		if(cmd.getName().equalsIgnoreCase("lvlBank"))
 		{
+			//XXX No arguments
+			if(args == 0)
+			{
+				cmdHelp(sender);
+			}
 			//XXX One argument
-			if(args == 1)
+			else if(args == 1)
 			{
 				//XXX Reload
 				if(arguments[0].equalsIgnoreCase("reload"))
@@ -142,11 +148,16 @@ public class Commands
 				}
 				else if(arguments[0].equalsIgnoreCase("help"))
 				{
-					cmdHelp();
+					cmdHelp(sender);
 				}
 				else if(arguments[0].equalsIgnoreCase(""))
 				{
-					cmdHelp();
+					cmdHelp(sender);
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "Unknown command!");
+					cmdHelp(sender);
 				}
 			}
 			//XXX Two arguments
@@ -224,6 +235,11 @@ public class Commands
 						sender.sendMessage(ChatColor.RED + "You do not have permission to use LvL Bank commands");
 					}
 				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "Unknown command!");
+					cmdHelp(sender);
+				}
 			}
 			//XXX Three arguments
 			else if(args == 3)
@@ -254,32 +270,42 @@ public class Commands
 					}
 					tellTheResult(sender, balance, player, world);
 				}
+				else
+				{
+					sender.sendMessage(ChatColor.RED + "Unknown command!");
+					cmdHelp(sender);
+				}
 			}
 		}
 		
 		return true;
 	}
 	
-	public void cmdHelp()
+	//XXX cmdHelp
+	public void cmdHelp(CommandSender sender)
 	{
-		player.sendMessage(ChatColor.BLUE + "The commands you can use are: ");
+		String allowedCmds = (ChatColor.BLUE + "The commands you can use are: \n");
 		
-		if(player.hasPermission(new Permissions().lvlBankReload))
+		if(sender.hasPermission(new Permissions().lvlBankReload))
 		{
-			player.sendMessage(ChatColor.YELLOW + "- /lvlBank reload");
+			allowedCmds += (ChatColor.YELLOW + "- /lvlBank reload \n");
 		}
 		
-		player.sendMessage(ChatColor.YELLOW + 
-				"- /lvlBank deposit [amount] \n "
-				+ "/lvlBank withdraw [amount] \n "
-				+ "/lvlBank balance [world]");
-		
-		if(player.hasPermission(new Permissions().lvlBankOther))
+		if(isPlayer)
 		{
-			player.sendMessage(ChatColor.YELLOW + "- /lvlBank balance <world> <player>");
+			allowedCmds += (ChatColor.YELLOW + 
+					"- /lvlBank deposit [amount] \n"
+					+ "- /lvlBank withdraw [amount] \n"
+					+ "- /lvlBank balance [world] \n");
 		}
 		
-		player.sendMessage(ChatColor.YELLOW + "- /lvlBank limits");
+		if(sender.hasPermission(new Permissions().lvlBankOther))
+		{
+			allowedCmds += (ChatColor.YELLOW + "- /lvlBank balance <world> <player> \n");
+		}
+		
+		allowedCmds += (ChatColor.YELLOW + "- /lvlBank limits");
+		sender.sendMessage(allowedCmds);
 	}
 	
 	//XXX checkMinMaxValues(Plugin plugin, ConsoleCommandSender clog)
