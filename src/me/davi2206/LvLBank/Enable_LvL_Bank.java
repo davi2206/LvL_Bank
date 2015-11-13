@@ -51,12 +51,12 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		signManager = SignManager.getInstance(con, this);
 		bm = BankManagement.getInstance(con, this);
 		pCmds = PlayerCommands.getInstance();
-		cCmds = ConsoleCommands.getInstance();
+		cCmds = ConsoleCommands.getInstance(plugin);
 		
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
 		
-		cCmds.checkMinMaxValues(plugin, clog);
+		cCmds.checkMinMaxValues();
 		
 		clog.sendMessage(ChatColor.GREEN + "LvL_Bank enabeled!");
 	}

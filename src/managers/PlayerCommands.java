@@ -16,8 +16,7 @@ public class PlayerCommands
 	private int args;
 
 	private PlayerCommands()
-	{
-	}
+	{}
 
 	public static PlayerCommands getInstance()
 	{
@@ -292,6 +291,8 @@ public class PlayerCommands
 		catch (Exception e)
 		{
 			player.sendMessage("The amount has to be a number, lower than or equal to the amount of levels you have");
+			cmdHelp();
+			return;
 		}
 
 		bm.deposit(player, amount);
@@ -309,6 +310,8 @@ public class PlayerCommands
 		{
 			player.sendMessage(ChatColor.RED
 					+ "The argument has to be a number, lower than or equal to the balance of your account!");
+			cmdHelp();
+			return;
 		}
 
 		bm.withdraw(player, amount);
@@ -395,5 +398,6 @@ public class PlayerCommands
 	{
 		player.sendMessage(ChatColor.RED
 				+ "You do not have permission to use that command!");
+		cmdHelp();
 	}
 }
