@@ -3,7 +3,8 @@ package me.davi2206.LvLBank;
 import java.sql.Connection;
 
 import managers.BankManagement;
-import managers.Commands;
+import managers.ConsoleCommands;
+import managers.PlayerCommands;
 import managers.SignManager;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +24,8 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 {
 	private static DbConnection dbCon;
 	private Connection con;
-	private Commands cmds;
+	private PlayerCommands pCmds;
+	private ConsoleCommands cCmds;
 	
 	private SignManager signManager;
 	private BankManagement bm;
@@ -47,12 +50,13 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		
 		signManager = SignManager.getInstance(con, this);
 		bm = BankManagement.getInstance(con, this);
-		cmds = Commands.getInstance();
+		pCmds = PlayerCommands.getInstance();
+		cCmds = ConsoleCommands.getInstance(plugin);
 		
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
 		
-		cmds.checkMinMaxValues(plugin, clog);
+		cCmds.checkMinMaxValues();
 		
 		clog.sendMessage(ChatColor.GREEN + "LvL_Bank enabeled!");
 	}
@@ -63,7 +67,15 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		//Sending Command handling to separate class to uncluster the plugin Main class
 		if(sender.hasPermission(new Permissions().lvlBankCommands))
 		{
-			cmds.doCommands(this, bm, sender, cmd, commandLabel, args);
+			if(sender instanceof Player)
+			{
+				pCmds.doCommands(this, bm, sender, cmd, commandLabel, args);
+			}
+			else
+			{
+				cCmds.doCommands(this, bm, sender, cmd, commandLabel, args);
+			}
+			
 			return true;
 		}
 
