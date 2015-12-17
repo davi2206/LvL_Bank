@@ -36,7 +36,6 @@ public class BankManagement
 	private int accountOverflow;
 	
 	private int allowedPlayerLevel;
-	private int playerLevelOverflow;
 	
 	private BankManagement(Connection con, Plugin plugin)
 	{
@@ -53,11 +52,10 @@ public class BankManagement
 		}
 		return bankMan;
 	}
-
+	
+	// XXX deposit(Player player, int amount)
 	public boolean deposit(Player player, int amount)
 	{
-		// XXX deposit(Player player, int amount)
-		
 		if(!validConnection(player))
 		{
 			return false;
@@ -85,7 +83,7 @@ public class BankManagement
 
 		if (group.equals("Excluded_Worlds"))
 		{
-			//itIsExcluded(player);
+			itIsExcluded(player);
 			return false;
 		}
 		

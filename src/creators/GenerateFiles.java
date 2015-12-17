@@ -1,27 +1,21 @@
 package creators;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class GenerateFiles
 {
 	private Plugin plugin;
-	private ConsoleCommandSender clog;
-	
-	private Reader reader;
+	private ConsoleCommandSender ccs;
 	
 	public GenerateFiles(Plugin plugin)
 	{
 		this.plugin = plugin;
-		clog = plugin.getServer().getConsoleSender();
+		ccs = plugin.getServer().getConsoleSender();
 	}
 
 	//Generate the Configuration file, if it is not there
@@ -31,19 +25,19 @@ public class GenerateFiles
 		
 		if(!configFile.exists())
 		{
-			clog.sendMessage(ChatColor.YELLOW + "Generating config file...");
+			ccs.sendMessage(ChatColor.YELLOW + "Generating config file...");
 			
 			plugin.saveDefaultConfig();
 			
-			clog.sendMessage(ChatColor.YELLOW + "Config file generated");
-			clog.sendMessage(ChatColor.YELLOW + "LvL_Bank: Default config must be edited!");
+			ccs.sendMessage(ChatColor.YELLOW + "Config file generated");
+			ccs.sendMessage(ChatColor.YELLOW + "LvL_Bank: Default config must be edited!");
 			
 			plugin.getPluginLoader().disablePlugin(plugin);
 			return;
 		}
 		else
 		{
-			clog.sendMessage(ChatColor.GREEN + "Config file already exists");
+			ccs.sendMessage(ChatColor.GREEN + "Config file already exists");
 			return;
 		}
 	}
@@ -52,8 +46,6 @@ public class GenerateFiles
 	//XXX Changelog file
 	public void generateChangelog()
 	{
-		//File changelogFile = new File(plugin.getDataFolder() + File.separator + "changelog.txt");
-		
 		try
 		{
 			PrintWriter writer = new PrintWriter((plugin.getDataFolder() + File.separator + "changelog.txt"), "UTF-8");
@@ -62,7 +54,6 @@ public class GenerateFiles
 		}
 		catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		plugin.saveResource("changelog.txt", true);
@@ -72,8 +63,6 @@ public class GenerateFiles
 	//XXX Donators file
 	public void generateDonators()
 	{
-		//File donatorsFile = new File(plugin.getDataFolder() + File.separator + "Donators.txt");
-		
 		try
 		{
 			PrintWriter writer = new PrintWriter((plugin.getDataFolder() + File.separator + "Donators.txt"), "UTF-8");

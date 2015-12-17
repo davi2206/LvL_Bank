@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Set;
 
 import org.bukkit.plugin.Plugin;
@@ -17,9 +16,8 @@ public class DbConnection
 	private static String sqlUSER = "";
 	private static String sqlPASS = "";
 	private Set<String> groupList;
-	
 	private static Connection con;
-	private static Plugin plugin;
+	private Plugin plugin;
 	
 	private static DbConnection dbcon;
 	

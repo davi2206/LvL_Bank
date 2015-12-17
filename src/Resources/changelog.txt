@@ -1,4 +1,10 @@
 ** CHANGELOG **
+V0.4.1
+- Clean up code
+- Large refactoring
+- Added command '/lvlBank help'
+- Command default added ('/lvlBank help')
+
 V0.4
 - Cleaned up code
 - Disallowed Deposit and Withdraw signs to be higher than max or lover than min values, on creation
@@ -11,7 +17,6 @@ V0.4
 - Added command '/lvlBank Balance <world>'
 - Added command '/lvlBank limits'
 - !! Changed Config.yml !!
-
 
 V0.3.3
 - Added changelog file
