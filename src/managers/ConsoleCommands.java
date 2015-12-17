@@ -94,6 +94,11 @@ public class ConsoleCommands
 				sender.sendMessage(ChatColor.RED + "Too many arguments");
 				cmdHelp();
 			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "Unknown command");
+				cmdHelp();
+			}
 		}
 		return true;
 	}
