@@ -1,5 +1,5 @@
 name: LvL_Bank
-version: 0.4
+version: 0.4.1
 main: me.davi2206.LvLBank.Enable_LvL_Bank
 
 commands:
