@@ -17,14 +17,14 @@ public class ConsoleCommands
 
 	private ConsoleCommands(Plugin pl)
 	{
-		plugin  = pl;
+		this.plugin = pl;
 	}
 
-	public static ConsoleCommands getInstance(Plugin pl)
+	public static ConsoleCommands getInstance(Plugin plug)
 	{
 		if (cmds == null)
 		{
-			cmds = new ConsoleCommands(pl);
+			cmds = new ConsoleCommands(plug);
 		}
 		return cmds;
 	}

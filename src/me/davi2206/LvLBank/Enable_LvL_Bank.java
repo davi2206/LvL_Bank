@@ -1,6 +1,7 @@
 package me.davi2206.LvLBank;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import managers.BankManagement;
 import managers.ConsoleCommands;
@@ -51,7 +52,7 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		signManager = SignManager.getInstance(con, this);
 		bm = BankManagement.getInstance(con, this);
 		pCmds = PlayerCommands.getInstance();
-		cCmds = ConsoleCommands.getInstance(plugin);
+		cCmds = ConsoleCommands.getInstance(this);
 		
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
@@ -67,6 +68,17 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		//Sending Command handling to separate class to uncluster the plugin Main class
 		if(sender.hasPermission(new Permissions().lvlBankCommands))
 		{
+			try
+			{
+				if(!con.isValid(3))
+				{
+					con = dbCon.openConnection();
+				}
+			}
+			catch (SQLException e)
+			{
+			}
+			
 			if(sender instanceof Player)
 			{
 				pCmds.doCommands(this, bm, sender, cmd, commandLabel, args);

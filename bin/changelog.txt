@@ -1,7 +1,4 @@
 ** CHANGELOG **
-V0.4.2
-- 
-
 V0.4.1
 - Clean up code
 - Large refactoring
