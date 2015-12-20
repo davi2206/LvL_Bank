@@ -11,20 +11,21 @@ import java.sql.Connection;
 public class Registration 
 {
 	private Connection con;
+	private DbConnection dbCon;
 	private PreparedStatement prep;
 	private ResultSet rs;
 	private static Registration registration;
 	
-	private Registration(Connection con)
+	private Registration(DbConnection dbCon)
 	{
-		this.con = con;
+		this.dbCon = dbCon;
 	}
 	
-	public static Registration getInstance(Connection con)
+	public static Registration getInstance(DbConnection dbCon)
 	{
 		if(registration == null)
 		{
-			registration = new Registration(con);
+			registration = new Registration(dbCon);
 		}
 		return registration;
 	}
@@ -33,6 +34,7 @@ public class Registration
 	{
 		try 
 		{
+			con = dbCon.openConnection();
 			prep = con.prepareStatement("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + p.getName() + "';");
 			rs = prep.executeQuery();
 			
@@ -43,6 +45,7 @@ public class Registration
 					return true;
 				}
 			}
+			con.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -56,6 +59,7 @@ public class Registration
 	{
 		try 
 		{
+			con = dbCon.openConnection();
 			prep = con.prepareStatement("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + player + "';");
 			rs = prep.executeQuery();
 			
@@ -66,6 +70,7 @@ public class Registration
 					return true;
 				}
 			}
+			con.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -80,9 +85,11 @@ public class Registration
 		String sql = null;
 		try
 		{
+			con = dbCon.openConnection();
 			sql = "INSERT INTO lvl_bank_accounts (playerName) VALUES('" + p.getName() + "');";
 			prep = con.prepareStatement(sql);
 			prep.executeUpdate();
+			con.close();
 		}
 		catch(SQLException sqlE)
 		{

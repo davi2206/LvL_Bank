@@ -11,11 +11,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import Connection.DbConnection;
 import Connection.Registration;
 
 public class BankManagement
 {
-	private Connection con;
+	private DbConnection dbCon;
+	private Connection connection;
 	private Registration reg;
 	private Plugin plugin;
 	private static BankManagement bankMan;
@@ -37,18 +39,18 @@ public class BankManagement
 	
 	private int allowedPlayerLevel;
 	
-	private BankManagement(Connection con, Plugin plugin)
+	private BankManagement(DbConnection dbCon, Plugin plugin)
 	{
-		this.con = con;
-		reg = Registration.getInstance(con);
+		reg = Registration.getInstance(dbCon);
+		this.dbCon = dbCon;
 		this.plugin = plugin;
 	}
 
-	public static BankManagement getInstance(Connection con, Plugin plugin)
+	public static BankManagement getInstance(DbConnection dbCon, Plugin plugin)
 	{
 		if (bankMan == null)
 		{
-			bankMan = new BankManagement(con, plugin);
+			bankMan = new BankManagement(dbCon, plugin);
 		}
 		return bankMan;
 	}
@@ -106,9 +108,11 @@ public class BankManagement
 
 		try
 		{
-			PreparedStatement depositAmount = con
+			connection = dbCon.openConnection();
+			PreparedStatement depositAmount = connection
 					.prepareStatement(querydepositAmount);
 			depositAmount.executeUpdate();
+			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -226,9 +230,11 @@ public class BankManagement
 				+ "';";
 		try
 		{
-			PreparedStatement withdrawAmount = con
+			connection = dbCon.openConnection();
+			PreparedStatement withdrawAmount = connection
 					.prepareStatement(queryWithdrawAmount);
 			withdrawAmount.executeUpdate();
+			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -320,13 +326,15 @@ public class BankManagement
 
 		try
 		{
-			PreparedStatement getBalance = con
+			connection = dbCon.openConnection();
+			PreparedStatement getBalance = connection
 					.prepareStatement(queryGetBalance);
 			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
+			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -366,13 +374,15 @@ public class BankManagement
 	
 		try
 		{
-			PreparedStatement getBalance = con
+			connection = dbCon.openConnection();
+			PreparedStatement getBalance = connection
 					.prepareStatement(queryGetBalance);
 			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
+			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -412,13 +422,15 @@ public class BankManagement
 
 		try
 		{
-			PreparedStatement getBalance = con
+			connection = dbCon.openConnection();
+			PreparedStatement getBalance = connection
 					.prepareStatement(queryGetBalance);
 			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
+			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -554,24 +566,28 @@ public class BankManagement
 		return "Excluded_Worlds";
 	}
 
+	// XXX itIsExcluded(Player player)
 	public void itIsExcluded(CommandSender sender)
 	{
-		// XXX itIsExcluded(Player player)
 		sender.sendMessage(ChatColor.RED
 				+ "The world you are requesting is excluded from the LvL Banking system!");
 	}
 	
+	// XXX Valid connection?
 	public boolean validConnection(CommandSender player)
 	{
 		try
 		{
-			if(!con.isValid(3))
+			connection = dbCon.openConnection();
+			if(!connection.isValid(3))
 			{
 				player.sendMessage(ChatColor.RED + "There is curently no connection to the bank! Contact an Admin for help");
+				connection.close();
 				return false;
 			}
 			else
 			{
+				connection.close();
 				return true;
 			}
 		}

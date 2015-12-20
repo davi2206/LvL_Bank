@@ -54,9 +54,6 @@ public class DbConnection
 			e.printStackTrace();
 		}
 		
-		createTable();
-		expandTable();
-		
 		return con;
 	}
 	
@@ -65,8 +62,10 @@ public class DbConnection
 	{
 		try 
 		{
+			con = openConnection();
 			PreparedStatement createTable = con.prepareStatement("CREATE TABLE lvl_bank_accounts(playerName varchar(255), PRIMARY KEY (playerName));");
 			createTable.executeUpdate();
+			con.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -83,8 +82,10 @@ public class DbConnection
 		{
 			try
 			{
+				con = openConnection();
 				PreparedStatement addGroup = con.prepareStatement("ALTER TABLE lvl_bank_accounts ADD " + group + " int default 0;");
 				addGroup.executeUpdate();
+				con.close();
 			}
 			catch (SQLException e)
 			{

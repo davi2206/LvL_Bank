@@ -47,10 +47,9 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		genFiles.generateDonators();
 		
 		dbCon = DbConnection.getInstance(this);
-		con = dbCon.openConnection();
 		
-		signManager = SignManager.getInstance(con, this);
-		bm = BankManagement.getInstance(con, this);
+		signManager = SignManager.getInstance(dbCon, this);
+		bm = BankManagement.getInstance(dbCon, this);
 		pCmds = PlayerCommands.getInstance();
 		cCmds = ConsoleCommands.getInstance(this);
 		
@@ -58,6 +57,8 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
 		
 		cCmds.checkMinMaxValues();
+		dbCon.createTable();
+		dbCon.expandTable();
 		
 		clog.sendMessage(ChatColor.GREEN + "LvL_Bank enabeled!");
 	}
@@ -68,17 +69,6 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		//Sending Command handling to separate class to uncluster the plugin Main class
 		if(sender.hasPermission(new Permissions().lvlBankCommands))
 		{
-			try
-			{
-				if(!con.isValid(3))
-				{
-					con = dbCon.openConnection();
-				}
-			}
-			catch (SQLException e)
-			{
-			}
-			
 			if(sender instanceof Player)
 			{
 				pCmds.doCommands(this, bm, sender, cmd, commandLabel, args);

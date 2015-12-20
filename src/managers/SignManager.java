@@ -16,6 +16,8 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 
+import Connection.DbConnection;
+
 public class SignManager implements Listener
 {
 	private BankManagement bm;
@@ -28,17 +30,17 @@ public class SignManager implements Listener
 	private String stringMinWit = "";
 	private String stringMaxWit = "";
 	
-	private SignManager(Connection con, Plugin plugin)
+	private SignManager(DbConnection dbCon, Plugin plugin)
 	{
-		bm = BankManagement.getInstance(con, plugin);
+		bm = BankManagement.getInstance(dbCon, plugin);
 		this.plugin = plugin;
 	}
 	
-	public static SignManager getInstance(Connection con, Plugin plugin)
+	public static SignManager getInstance(DbConnection dbCon, Plugin plugin)
 	{
 		if(signMan == null)
 		{
-			signMan = new SignManager(con, plugin);
+			signMan = new SignManager(dbCon, plugin);
 		}
 		return signMan;
 	}
