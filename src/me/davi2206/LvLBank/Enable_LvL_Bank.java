@@ -1,8 +1,5 @@
 package me.davi2206.LvLBank;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import managers.BankManagement;
 import managers.ConsoleCommands;
 import managers.PlayerCommands;
@@ -15,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import Connection.DbConnection;
@@ -24,7 +20,6 @@ import creators.GenerateFiles;
 public class Enable_LvL_Bank extends JavaPlugin implements Listener
 {
 	private static DbConnection dbCon;
-	private Connection con;
 	private PlayerCommands pCmds;
 	private ConsoleCommands cCmds;
 	
@@ -33,11 +28,9 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 	private GenerateFiles genFiles;
 	
 	private ConsoleCommandSender clog;
-	private Plugin plugin;
 	
 	public void onEnable()
 	{
-		plugin = this;
 		clog = this.getServer().getConsoleSender();
 		clog.sendMessage(ChatColor.BLUE + "LvL_Bank enabeling!");
 		

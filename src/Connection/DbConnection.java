@@ -24,6 +24,7 @@ public class DbConnection
 	private DbConnection(Plugin plugin)
 	{
 		this.plugin = plugin;
+		con = openConnection();
 	}
 	
 	public static DbConnection getInstance(Plugin plugin)
@@ -62,10 +63,9 @@ public class DbConnection
 	{
 		try 
 		{
-			con = openConnection();
+			con = validateCon();
 			PreparedStatement createTable = con.prepareStatement("CREATE TABLE lvl_bank_accounts(playerName varchar(255), PRIMARY KEY (playerName));");
 			createTable.executeUpdate();
-			con.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -82,15 +82,31 @@ public class DbConnection
 		{
 			try
 			{
-				con = openConnection();
+				con = validateCon();
 				PreparedStatement addGroup = con.prepareStatement("ALTER TABLE lvl_bank_accounts ADD " + group + " int default 0;");
 				addGroup.executeUpdate();
-				con.close();
 			}
 			catch (SQLException e)
 			{
 				plugin.getLogger().info("Column '" + group + "' was not added! Does it already exist?");
 			}
 		}
+	}
+	
+	//Validate the connection
+	public Connection validateCon()
+	{
+		try
+		{
+			if(!con.isValid(5))
+			{
+				con = openConnection();
+			}
+		}
+		catch(SQLException sqlE)
+		{
+			
+		}
+		return con;
 	}
 }

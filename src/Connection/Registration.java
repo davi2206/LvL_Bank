@@ -34,7 +34,7 @@ public class Registration
 	{
 		try 
 		{
-			con = dbCon.openConnection();
+			con = dbCon.validateCon();
 			prep = con.prepareStatement("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + p.getName() + "';");
 			rs = prep.executeQuery();
 			
@@ -45,7 +45,6 @@ public class Registration
 					return true;
 				}
 			}
-			con.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -59,7 +58,7 @@ public class Registration
 	{
 		try 
 		{
-			con = dbCon.openConnection();
+			con = dbCon.validateCon();
 			prep = con.prepareStatement("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + player + "';");
 			rs = prep.executeQuery();
 			
@@ -70,7 +69,6 @@ public class Registration
 					return true;
 				}
 			}
-			con.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -85,11 +83,10 @@ public class Registration
 		String sql = null;
 		try
 		{
-			con = dbCon.openConnection();
+			con = dbCon.validateCon();
 			sql = "INSERT INTO lvl_bank_accounts (playerName) VALUES('" + p.getName() + "');";
 			prep = con.prepareStatement(sql);
 			prep.executeUpdate();
-			con.close();
 		}
 		catch(SQLException sqlE)
 		{

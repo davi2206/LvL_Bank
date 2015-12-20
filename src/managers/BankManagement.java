@@ -17,7 +17,7 @@ import Connection.Registration;
 public class BankManagement
 {
 	private DbConnection dbCon;
-	private Connection connection;
+	private Connection con;
 	private Registration reg;
 	private Plugin plugin;
 	private static BankManagement bankMan;
@@ -108,11 +108,10 @@ public class BankManagement
 
 		try
 		{
-			connection = dbCon.openConnection();
-			PreparedStatement depositAmount = connection
+			con = dbCon.validateCon();
+			PreparedStatement depositAmount = con
 					.prepareStatement(querydepositAmount);
 			depositAmount.executeUpdate();
-			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -230,11 +229,10 @@ public class BankManagement
 				+ "';";
 		try
 		{
-			connection = dbCon.openConnection();
-			PreparedStatement withdrawAmount = connection
+			con = dbCon.validateCon();
+			PreparedStatement withdrawAmount = con
 					.prepareStatement(queryWithdrawAmount);
 			withdrawAmount.executeUpdate();
-			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -326,15 +324,14 @@ public class BankManagement
 
 		try
 		{
-			connection = dbCon.openConnection();
-			PreparedStatement getBalance = connection
+			con = dbCon.validateCon();
+			PreparedStatement getBalance = con
 					.prepareStatement(queryGetBalance);
 			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
-			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -374,15 +371,14 @@ public class BankManagement
 	
 		try
 		{
-			connection = dbCon.openConnection();
-			PreparedStatement getBalance = connection
+			con = dbCon.validateCon();
+			PreparedStatement getBalance = con
 					.prepareStatement(queryGetBalance);
 			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
-			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -422,15 +418,14 @@ public class BankManagement
 
 		try
 		{
-			connection = dbCon.openConnection();
-			PreparedStatement getBalance = connection
+			con = dbCon.validateCon();
+			PreparedStatement getBalance = con
 					.prepareStatement(queryGetBalance);
 			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
-			connection.close();
 		}
 		catch (SQLException e)
 		{
@@ -578,16 +573,20 @@ public class BankManagement
 	{
 		try
 		{
-			connection = dbCon.openConnection();
-			if(!connection.isValid(3))
+			con = dbCon.validateCon();
+			if(!con.isValid(3))
 			{
-				player.sendMessage(ChatColor.RED + "There is curently no connection to the bank! Contact an Admin for help");
-				connection.close();
+				player.sendMessage(ChatColor.RED + "There is curently no connection to the bank!");
+				player.sendMessage(ChatColor.RED + "Trying to reestablish connection now...");
+				con = dbCon.openConnection();
+				if(!con.isValid(5))
+				{
+					player.sendMessage(ChatColor.RED + "The connection could not be established! Contact an Admin for help");
+				}
 				return false;
 			}
 			else
 			{
-				connection.close();
 				return true;
 			}
 		}

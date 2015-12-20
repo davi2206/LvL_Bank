@@ -1,7 +1,5 @@
 package managers;
 
-import java.sql.Connection;
-
 import me.davi2206.LvLBank.Permissions;
 
 import org.bukkit.ChatColor;
