@@ -98,15 +98,13 @@ public class DbConnection
 	{
 		try
 		{
-			if(!con.isValid(5))
+			if(!con.isValid(1))
 			{
 				con = openConnection();
 			}
 		}
 		catch(SQLException sqlE)
-		{
-			
-		}
+		{}
 		return con;
 	}
 }
