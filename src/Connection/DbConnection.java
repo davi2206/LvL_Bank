@@ -3,6 +3,7 @@ package Connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -93,6 +94,43 @@ public class DbConnection
 		}
 	}
 	
+	//Execute DB call to put data in the DB
+	public boolean executeDBStringPut(String query)
+	{
+		con = validateCon();
+		
+		try
+		{
+			PreparedStatement depositAmount = con.prepareStatement(query);
+			depositAmount.executeUpdate();
+			return true;
+		}
+		catch(SQLException se)
+		{
+			se.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	//Execute DB call to get data from the DB
+	public ResultSet executeDBStringGet(String query)
+	{
+		ResultSet rs = null;
+		con = validateCon();
+		
+		try
+		{
+			PreparedStatement prep = con.prepareStatement(query);
+			rs = prep.executeQuery();
+		}
+		catch (SQLException se)
+		{
+			se.printStackTrace();
+		}
+		return rs;
+	}
+	
 	//Validate the connection
 	public Connection validateCon()
 	{
@@ -104,7 +142,9 @@ public class DbConnection
 			}
 		}
 		catch(SQLException sqlE)
-		{}
+		{
+			sqlE.printStackTrace();
+		}
 		return con;
 	}
 }

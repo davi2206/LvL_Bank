@@ -73,7 +73,11 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 			
 			return true;
 		}
-
+		else
+		{
+			sender.sendMessage(ChatColor.RED + "You do not have permission to use LvL_Bank commands!");
+		}
+		
 		return false;
 	}
 	

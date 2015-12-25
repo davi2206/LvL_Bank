@@ -17,7 +17,6 @@ import Connection.Registration;
 public class BankManagement
 {
 	private DbConnection dbCon;
-	private Connection con;
 	private Registration reg;
 	private Plugin plugin;
 	private static BankManagement bankMan;
@@ -38,7 +37,9 @@ public class BankManagement
 	private int accountOverflow;
 	
 	private int allowedPlayerLevel;
+	private boolean worked;
 	
+	// XXX Constructor
 	private BankManagement(DbConnection dbCon, Plugin plugin)
 	{
 		reg = Registration.getInstance(dbCon);
@@ -46,6 +47,7 @@ public class BankManagement
 		this.plugin = plugin;
 	}
 
+	// XXX Get instance
 	public static BankManagement getInstance(DbConnection dbCon, Plugin plugin)
 	{
 		if (bankMan == null)
@@ -58,11 +60,6 @@ public class BankManagement
 	// XXX deposit(Player player, int amount)
 	public boolean deposit(Player player, int amount)
 	{
-		if(!validConnection(player))
-		{
-			return false;
-		}
-		
 		defineValues(player, amount);
 		
 		if(accountOverflow > 0)
@@ -106,18 +103,15 @@ public class BankManagement
 		String querydepositAmount = "UPDATE lvl_bank_accounts SET " + group
 				+ " = " + lvl + " WHERE playerName = '" + playerName + "';";
 
-		try
+		
+		worked = dbCon.executeDBStringPut(querydepositAmount);
+		
+		if(!worked)
 		{
-			con = dbCon.validateCon();
-			PreparedStatement depositAmount = con
-					.prepareStatement(querydepositAmount);
-			depositAmount.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
+			didNotWork(player);
 			return false;
 		}
+		
 		if (amount > 1)
 		{
 			player.sendMessage(ChatColor.GREEN + "" + amount
@@ -134,15 +128,10 @@ public class BankManagement
 
 		return true;
 	}
-
+	
+	// XXX deposit (The maximum amount)
 	public boolean deposit(Player player)
 	{
-		// XXX deposit(Player player)
-		if(!validConnection(player))
-		{
-			return false;
-		}
-		
 		int lvl = player.getLevel();
 
 		defineValues(player, lvl);
@@ -166,14 +155,9 @@ public class BankManagement
 		}
 	}
 
+	// XXX withdraw(Player player, int amount)
 	public boolean withdraw(Player player, int amount)
 	{
-		// XXX withdraw(Player player, int amount)
-		if(!validConnection(player))
-		{
-			return false;
-		}
-		
 		if (!checkWithdrawLimits(player, amount))
 		{
 			return false;
@@ -227,19 +211,14 @@ public class BankManagement
 		String queryWithdrawAmount = "UPDATE lvl_bank_accounts SET " + group
 				+ " = " + stringLVL + " WHERE playerName = '" + playerName
 				+ "';";
-		try
-		{
-			con = dbCon.validateCon();
-			PreparedStatement withdrawAmount = con
-					.prepareStatement(queryWithdrawAmount);
-			withdrawAmount.executeUpdate();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			return false;
-		}
 		
+		worked = dbCon.executeDBStringPut(queryWithdrawAmount);
+		
+		if(!worked)
+		{
+			didNotWork(player);
+		}
+				
 		if (amount > 1 || amount == 0)
 		{
 			player.sendMessage(ChatColor.YELLOW + "" + amount
@@ -256,14 +235,9 @@ public class BankManagement
 		return true;
 	}
 
+	// XXX withdraw (The maximum amount)
 	public boolean withdraw(Player player)
 	{
-		// XXX withdraw(Player player)
-		if(!validConnection(player))
-		{
-			return false;
-		}
-		
 		int balance = (int) getBalance(player);
 
 		String stringMaxWit = plugin.getConfig().getString(
@@ -293,15 +267,10 @@ public class BankManagement
 		}
 	}
 
+	// XXX getBalance(Player player)
 	public int getBalance(Player player)
 	{
-		// XXX getBalance(Player player)
-
-		if(!validConnection(player))
-		{
-			return (-9001);
-		}
-		
+		ResultSet rs = null;
 		playerName = player.getName();
 		this.world = player.getWorld().getName();
 		group = getGroup(world);
@@ -322,36 +291,36 @@ public class BankManagement
 				+ "';";
 		int lvlFromDb = 0;
 
+		rs = dbCon.executeDBStringGet(queryGetBalance);
+		
+		if(rs == null)
+		{
+			didNotWork(player);
+			return -9001;
+		}
+		
 		try
 		{
-			con = dbCon.validateCon();
-			PreparedStatement getBalance = con
-					.prepareStatement(queryGetBalance);
-			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
 		}
-		catch (SQLException e)
+		catch (SQLException sqle)
 		{
-			e.printStackTrace();
+			sqle.printStackTrace();
 		}
-
+		
 		return lvlFromDb;
 	}
 
+	// XXX getBalance(Player player, String world)
 	public int getBalance(Player player, String world)
 	{
-		// XXX getBalance(Player player, String world)
+		ResultSet rs = null;
 		playerName = player.getName();
 		this.world = world;
 		group = getGroup(world);
-	
-		if(!validConnection(player))
-		{
-			return (-9001);
-		}
 		
 		if (!reg.isRegistered(playerName))
 		{
@@ -368,38 +337,38 @@ public class BankManagement
 				+ " FROM lvl_bank_accounts WHERE playerName = '" + playerName
 				+ "';";
 		int lvlFromDb = 0;
-	
+		
+		rs = dbCon.executeDBStringGet(queryGetBalance);
+		
+		if(rs == null)
+		{
+			didNotWork(player);
+			return -9001;
+		}
+		
 		try
 		{
-			con = dbCon.validateCon();
-			PreparedStatement getBalance = con
-					.prepareStatement(queryGetBalance);
-			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
 		}
-		catch (SQLException e)
+		catch (SQLException sqle)
 		{
-			e.printStackTrace();
+			sqle.printStackTrace();
 		}
 	
 		return lvlFromDb;
 	}
 
+	// XXX getBalance(Player sender, String player, String world)
 	public int getBalance(CommandSender sender, String player, String world)
 	{
-		// XXX getBalance(Player sender, String player, String world)
+		ResultSet rs = null;
 		playerName = player;
 		this.world = world;
 		group = getGroup(world);
 
-		if(!validConnection(sender))
-		{
-			return (-9001);
-		}
-		
 		if (!reg.isRegistered(playerName))
 		{
 			return (-1);
@@ -416,28 +385,32 @@ public class BankManagement
 				+ "';";
 		int lvlFromDb = 0;
 
+		rs = dbCon.executeDBStringGet(queryGetBalance);
+		
+		if(rs == null)
+		{
+			didNotWork(sender);
+			return -9001;
+		}
+		
 		try
 		{
-			con = dbCon.validateCon();
-			PreparedStatement getBalance = con
-					.prepareStatement(queryGetBalance);
-			ResultSet rs = getBalance.executeQuery();
 			while (rs.next())
 			{
 				lvlFromDb = rs.getInt(group);
 			}
 		}
-		catch (SQLException e)
+		catch (SQLException sqle)
 		{
-			e.printStackTrace();
+			sqle.printStackTrace();
 		}
 
 		return lvlFromDb;
 	}
 
+	//XXX Define values
 	private void defineValues(Player player, int amount)
 	{
-		//XXX Define values
 		String stringMinDep = plugin.getConfig().getString(
 				"Account_Limits.Min_Deposit");
 		String stringMaxDep = plugin.getConfig().getString(
@@ -452,10 +425,10 @@ public class BankManagement
 		accountOverflow = (newBalance - allowedBalance);
 	}
 	
+	//XXX checkDepositLimits(Player player, int amount)
 	// Check if the depositd amount is within the limits
 	private boolean checkDepositLimits(Player player, int amount)
 	{
-		//XXX checkDepositLimits(Player player, int amount)
 		if (amount < 0)
 		{
 			player.sendMessage(ChatColor.RED
@@ -534,10 +507,10 @@ public class BankManagement
 		}
 	}
 
+	// XXX getGroup(String world)
 	// Get the group of the specified world
 	private String getGroup(String world)
 	{
-		// XXX getGroup(String world)
 		groupList = plugin.getConfig().getConfigurationSection("World_Groups")
 				.getKeys(false);
 
@@ -568,32 +541,9 @@ public class BankManagement
 				+ "The world you are requesting is excluded from the LvL Banking system!");
 	}
 	
-	// XXX Valid connection?
-	public boolean validConnection(CommandSender player)
+	// XXX transaction did not work
+	private void didNotWork(CommandSender p)
 	{
-		try
-		{
-			con = dbCon.validateCon();
-			if(!con.isValid(3))
-			{
-				player.sendMessage(ChatColor.RED + "There is curently no connection to the bank!");
-				player.sendMessage(ChatColor.RED + "Trying to reestablish connection now...");
-				con = dbCon.openConnection();
-				if(!con.isValid(5))
-				{
-					player.sendMessage(ChatColor.RED + "The connection could not be established! Contact an Admin for help");
-				}
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-		catch (SQLException sqlExc)
-		{
-			sqlExc.printStackTrace();
-			return false;
-		}
+		p.sendMessage(ChatColor.RED + "There seems to be a problem with the connection to the bank servers.");
 	}
 }

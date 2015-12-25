@@ -4,23 +4,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
 
 public class Registration 
 {
-	private Connection con;
 	private DbConnection dbCon;
 	private PreparedStatement prep;
 	private ResultSet rs;
 	private static Registration registration;
 	
+	// XXX Constructor
 	private Registration(DbConnection dbCon)
 	{
 		this.dbCon = dbCon;
 	}
 	
+	// XXX Get instance
 	public static Registration getInstance(DbConnection dbCon)
 	{
 		if(registration == null)
@@ -30,14 +32,15 @@ public class Registration
 		return registration;
 	}
 
+	// XXX Check if player is registered
 	public boolean isRegistered(Player p)
 	{
+		String queryGetPlayer = ("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + p.getName() + "';");
+		
+		rs = dbCon.executeDBStringGet(queryGetPlayer);
+		
 		try 
 		{
-			con = dbCon.validateCon();
-			prep = con.prepareStatement("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + p.getName() + "';");
-			rs = prep.executeQuery();
-			
 			while(rs.next())
 			{
 				if(rs.getString("playerName").equals(p.getName()))
@@ -46,22 +49,23 @@ public class Registration
 				}
 			}
 		} 
-		catch (SQLException e) 
+		catch (SQLException sqle) 
 		{
-			e.printStackTrace();
+			sqle.printStackTrace();
 		}
 		
 		return false;
 	}
 	
+	// XXX Check if player name is registered
 	public boolean isRegistered(String player)
 	{
+		String queryGetPlayer = ("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + player + "';");
+		
+		rs = dbCon.executeDBStringGet(queryGetPlayer);
+		
 		try 
 		{
-			con = dbCon.validateCon();
-			prep = con.prepareStatement("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + player + "';");
-			rs = prep.executeQuery();
-			
 			while(rs.next())
 			{
 				if(rs.getString("playerName").equals(player))
@@ -70,28 +74,28 @@ public class Registration
 				}
 			}
 		} 
-		catch (SQLException e) 
+		catch (SQLException sqle) 
 		{
-			e.printStackTrace();
+			sqle.printStackTrace();
 		}
 		
 		return false;
 	}
 
+	// XXX Register player
 	public void registerPlayer(Player p, String group)
 	{
-		String sql = null;
-		try
+		String queryRegister = ("INSERT INTO lvl_bank_accounts (playerName) VALUES('" + p.getName() + "');");
+
+		boolean worked = dbCon.executeDBStringPut(queryRegister);
+		
+		if(worked)
 		{
-			con = dbCon.validateCon();
-			sql = "INSERT INTO lvl_bank_accounts (playerName) VALUES('" + p.getName() + "');";
-			prep = con.prepareStatement(sql);
-			prep.executeUpdate();
+			p.sendMessage(ChatColor.GREEN + "New account for " + p.getName() + " created");
 		}
-		catch(SQLException sqlE)
+		else
 		{
-			sqlE.printStackTrace();
+			p.sendMessage(ChatColor.RED + "Account for " + p.getName() + " NOT created");
 		}
-		p.sendMessage("New account for " + p.getName() + " created");
 	}
 }
