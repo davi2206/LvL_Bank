@@ -1,18 +1,14 @@
 package Connection;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.sql.Connection;
-
 public class Registration 
 {
 	private DbConnection dbCon;
-	private PreparedStatement prep;
 	private ResultSet rs;
 	private static Registration registration;
 	
