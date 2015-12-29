@@ -1,6 +1,13 @@
 ** CHANGELOG **
+V0.4.3
+- Refactored database connection
+- Moved all DB activity to one class (DB connection should now be more stabile)
+
+V0.4.2
+- Altered database connection. It did not work as expected..
+
 V0.4.1
-- Clean up code
+- Cleaned up code
 - Large refactoring
 - Added command '/lvlBank help'
 - Command default added ('/lvlBank help')
