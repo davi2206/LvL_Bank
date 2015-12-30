@@ -14,8 +14,6 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 
-import Connection.DbConnection;
-
 public class SignManager implements Listener
 {
 	private BankManagement bm;

@@ -1,4 +1,8 @@
 ** CHANGELOG **
+V0.4.4
+- Added YML file option
+- Refactored code
+
 V0.4.3
 - Refactored database connection
 - Moved all DB activity to one class (DB connection should now be more stabile)
