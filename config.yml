@@ -1,11 +1,12 @@
 # # # # # # # # # # # # #
 #  --    LvL Bank    -- #
-#  --  Version: 0.4  -- #
+#  -- Version: 0.4.4 -- #
 #  --  By: Davi2206  -- #
 # # # # # # # # # # # # #
 
 # Default SQL values
 MySQL:
+  use_SQL: false
   SQL_IP: localHost
   SQL_Port: '3306'
   SQL_Database_Name: someDatabase

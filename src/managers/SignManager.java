@@ -28,17 +28,17 @@ public class SignManager implements Listener
 	private String stringMinWit = "";
 	private String stringMaxWit = "";
 	
-	private SignManager(DbConnection dbCon, Plugin plugin)
+	private SignManager(BankManagement bm, Plugin plugin)
 	{
-		bm = BankManagement.getInstance(dbCon, plugin);
+		this.bm = bm;
 		this.plugin = plugin;
 	}
 	
-	public static SignManager getInstance(DbConnection dbCon, Plugin plugin)
+	public static SignManager getInstance(BankManagement bm, Plugin plugin)
 	{
 		if(signMan == null)
 		{
-			signMan = new SignManager(dbCon, plugin);
+			signMan = new SignManager(bm, plugin);
 		}
 		return signMan;
 	}

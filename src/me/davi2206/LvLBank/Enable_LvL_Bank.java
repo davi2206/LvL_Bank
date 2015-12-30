@@ -1,6 +1,8 @@
 package me.davi2206.LvLBank;
 
 import managers.BankManagement;
+import managers.BankSQL;
+import managers.BankYML;
 import managers.ConsoleCommands;
 import managers.PlayerCommands;
 import managers.SignManager;
@@ -39,10 +41,10 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		genFiles.generateChangelog();
 		genFiles.generateDonators();
 		
-		dbCon = DbConnection.getInstance(this);
+		bm = sqlTrueFalse();
 		
-		signManager = SignManager.getInstance(dbCon, this);
-		bm = BankManagement.getInstance(dbCon, this);
+		signManager = SignManager.getInstance(bm, this);
+		
 		pCmds = PlayerCommands.getInstance();
 		cCmds = ConsoleCommands.getInstance(this);
 		
@@ -79,6 +81,27 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		}
 		
 		return false;
+	}
+	
+	public BankManagement sqlTrueFalse()
+	{
+		BankManagement bank;
+		boolean useSql = false;
+		
+		useSql = this.getConfig().getBoolean("MySQL.use_SQL", false);
+		
+		if(useSql)
+		{
+			dbCon = DbConnection.getInstance(this);
+			bank = BankSQL.getInstance(dbCon, this);
+		}
+		else
+		{
+			// TODO timer here maybe?
+			bank = BankYML.getInstance(this);
+		}
+		
+		return bank;
 	}
 	
 	public void onDisable()

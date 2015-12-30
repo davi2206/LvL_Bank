@@ -31,7 +31,8 @@ public class Registration
 	// XXX Check if player is registered
 	public boolean isRegistered(Player p)
 	{
-		String queryGetPlayer = ("SELECT * FROM lvl_bank_accounts WHERE playerName = '" + p.getName() + "';");
+		String queryGetPlayer = ("SELECT * FROM lvl_bank_accounts WHERE playerName = '" 
+				+ p.getName() + "';");
 		
 		rs = dbCon.executeDBStringGet(queryGetPlayer);
 		
