@@ -36,6 +36,9 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		clog = this.getServer().getConsoleSender();
 		clog.sendMessage(ChatColor.BLUE + "LvL_Bank enabeling!");
 		
+		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
+		
 		genFiles = new GenerateFiles(this);
 		genFiles.generateConfig();
 		genFiles.generateChangelog();
@@ -48,12 +51,7 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		pCmds = PlayerCommands.getInstance();
 		cCmds = ConsoleCommands.getInstance(this);
 		
-		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
-		
 		cCmds.checkMinMaxValues();
-		dbCon.createTable();
-		dbCon.expandTable();
 		
 		clog.sendMessage(ChatColor.GREEN + "LvL_Bank enabeled!");
 	}
@@ -93,6 +91,8 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		if(useSql)
 		{
 			dbCon = DbConnection.getInstance(this);
+			dbCon.createTable();
+			dbCon.expandTable();
 			bank = BankSQL.getInstance(dbCon, this);
 		}
 		else
