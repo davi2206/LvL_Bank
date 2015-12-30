@@ -36,11 +36,14 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		clog = this.getServer().getConsoleSender();
 		clog.sendMessage(ChatColor.BLUE + "LvL_Bank enabeling!");
 		
-		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
-		
 		genFiles = new GenerateFiles(this);
-		genFiles.generateConfig();
+		boolean gen = genFiles.generateConfig();
+		
+		if(gen)
+		{
+			return;
+		}
+		
 		genFiles.generateChangelog();
 		genFiles.generateDonators();
 		
@@ -50,6 +53,9 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		
 		pCmds = PlayerCommands.getInstance();
 		cCmds = ConsoleCommands.getInstance(this);
+		
+		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.getServer().getPluginManager().registerEvents(signManager, this);
 		
 		cCmds.checkMinMaxValues();
 		

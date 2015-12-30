@@ -19,7 +19,7 @@ public class GenerateFiles
 	}
 
 	//Generate the Configuration file, if it is not there
-	public void generateConfig()
+	public boolean generateConfig()
 	{
 		File configFile = new File(plugin.getDataFolder() + File.separator + "config.yml");
 		
@@ -33,12 +33,12 @@ public class GenerateFiles
 			ccs.sendMessage(ChatColor.YELLOW + "LvL_Bank: Default config must be edited!");
 			
 			plugin.getPluginLoader().disablePlugin(plugin);
-			return;
+			return true;
 		}
 		else
 		{
 			ccs.sendMessage(ChatColor.GREEN + "Config file already exists");
-			return;
+			return false;
 		}
 	}
 	
