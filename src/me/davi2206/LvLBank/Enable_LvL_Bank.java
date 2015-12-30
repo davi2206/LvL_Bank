@@ -37,15 +37,9 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		clog.sendMessage(ChatColor.BLUE + "LvL_Bank enabeling!");
 		
 		genFiles = new GenerateFiles(this);
-		boolean gen = genFiles.generateConfig();
-		
-		if(gen)
-		{
-			return;
-		}
-		
 		genFiles.generateChangelog();
 		genFiles.generateDonators();
+		genFiles.generateConfig();
 		
 		bm = sqlTrueFalse();
 		
