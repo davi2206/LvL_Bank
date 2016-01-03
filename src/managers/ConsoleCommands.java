@@ -54,7 +54,7 @@ public class ConsoleCommands
 				// XXX Reload
 				if (arguments[0].equalsIgnoreCase("reload"))
 				{
-					cmdReload();
+					cmdReload(bm);
 					return true;
 				}
 				else if (arguments[0].equalsIgnoreCase("Limits"))
@@ -123,8 +123,9 @@ public class ConsoleCommands
 	}
 
 	// XXX cmdReload()
-	public void cmdReload()
+	public void cmdReload(BankManagement bm)
 	{
+		bm.save();
 		plugin.reloadConfig();
 		checkMinMaxValues();
 		sender.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");

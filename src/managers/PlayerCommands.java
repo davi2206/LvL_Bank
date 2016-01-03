@@ -50,7 +50,7 @@ public class PlayerCommands
 			{
 				if (arguments[0].equalsIgnoreCase("reload"))
 				{
-					cmdReload();
+					cmdReload(bm);
 				}
 				else if (arguments[0].equalsIgnoreCase("deposit"))
 				{
@@ -149,10 +149,11 @@ public class PlayerCommands
 	}
 
 	// XXX cmdReload
-	public boolean cmdReload()
+	public boolean cmdReload(BankManagement bm)
 	{
 		if (player.hasPermission(new Permissions().lvlBankReload))
 		{
+			bm.save();
 			plugin.reloadConfig();
 			player.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");
 			checkMinMaxValues();
