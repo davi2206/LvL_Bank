@@ -4,6 +4,7 @@ import managers.BankManagement;
 import managers.BankSQL;
 import managers.BankYML;
 import managers.ConsoleCommands;
+import managers.FileSaveTimer;
 import managers.PlayerCommands;
 import managers.SignManager;
 
@@ -28,6 +29,7 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 	private SignManager signManager;
 	private BankManagement bm;
 	private GenerateFiles genFiles;
+	private FileSaveTimer fst;
 	
 	private ConsoleCommandSender clog;
 	
@@ -37,9 +39,9 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		clog.sendMessage(ChatColor.BLUE + "LvL_Bank enabeling!");
 		
 		genFiles = new GenerateFiles(this);
+		genFiles.generateConfig();
 		genFiles.generateChangelog();
 		genFiles.generateDonators();
-		genFiles.generateConfig();
 		
 		bm = sqlTrueFalse();
 		
@@ -70,7 +72,6 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 			{
 				cCmds.doCommands(this, bm, sender, cmd, commandLabel, args);
 			}
-			
 			return true;
 		}
 		else
@@ -97,8 +98,9 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		}
 		else
 		{
-			// TODO timer here maybe?
 			bank = BankYML.getInstance(this);
+			fst = new FileSaveTimer(bank);
+			fst.runTaskTimer(this, 0, (5 * (60 * 20)));
 		}
 		
 		return bank;
@@ -106,6 +108,7 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 	
 	public void onDisable()
 	{
+		bm.save();
 		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><> \n");
 		clog.sendMessage(ChatColor.RED + "Disabling LvL_Bank \n");
 		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><>");
