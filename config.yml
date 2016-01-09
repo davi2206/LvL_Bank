@@ -1,6 +1,6 @@
 # # # # # # # # # # # # #
 #  --    LvL Bank    -- #
-#  -- Version: 0.4.4 -- #
+#  -- Version: 0.4.5 -- #
 #  --  By: Davi2206  -- #
 # # # # # # # # # # # # #
 
@@ -39,16 +39,16 @@ World_Groups:
 # If the Min values are higher than the Max values the plugin will be disabled
 Account_Limits:
   Min_Deposit: 5
-  Max_Deposit: 10
+  Max_Deposit: 25
   Min_Withdraw: 1
-  Max_Withdraw: 10
+  Max_Withdraw: -1
   Sign_For_Unlimited: '-'
   Max_Account_Balance: 9001
 
 # The maximum amount of levels a player can withdraw up to
 # Use '-1' for unlimited
 Player_Limits:
-  Max_Player_Level: 30
+  Max_Player_Level: -1
 
 ## Bank fees:
 ## When using Vault the fee is a cash amount

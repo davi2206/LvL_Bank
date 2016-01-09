@@ -1,4 +1,8 @@
 ** CHANGELOG **
+V0.4.5
+- Added timer for YML saver
+- Changed default values in config
+
 V0.4.4
 - Added YML file option
 - Refactored code
