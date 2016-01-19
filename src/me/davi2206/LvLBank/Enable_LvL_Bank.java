@@ -91,6 +91,7 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		
 		if(useSql)
 		{
+			dbCon.validateCon();
 			dbCon = DbConnection.getInstance(this);
 			dbCon.createTable();
 			dbCon.expandTable();

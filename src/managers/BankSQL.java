@@ -427,7 +427,7 @@ public class BankSQL implements BankManagement
 	// Check if the depositd amount is within the limits
 	public boolean checkDepositLimits(Player player, int amount)
 	{
-		if (amount < 0)
+		if (amount < 0 && maxDep != -1 && minDep != -1)
 		{
 			player.sendMessage(ChatColor.RED
 					+ "You cannot deposit a negative amount!");
@@ -475,7 +475,7 @@ public class BankSQL implements BankManagement
 		minWit = Integer.parseInt(stringMinWit);
 		maxWit = Integer.parseInt(stringMaxWit);
 		
-		if (amount < 0)
+		if (amount < 0 && maxWit != -1 && minWit != -1)
 		{
 			player.sendMessage(ChatColor.RED
 					+ "You cannot withdraw a negative amount!");

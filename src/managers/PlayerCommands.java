@@ -155,8 +155,9 @@ public class PlayerCommands
 		{
 			bm.save();
 			plugin.reloadConfig();
-			player.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");
+			plugin.onEnable();
 			checkMinMaxValues();
+			player.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");
 			return true;
 		}
 		else

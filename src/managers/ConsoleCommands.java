@@ -127,6 +127,7 @@ public class ConsoleCommands
 	{
 		bm.save();
 		plugin.reloadConfig();
+		plugin.onEnable();
 		checkMinMaxValues();
 		sender.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");
 	}
