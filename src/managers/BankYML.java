@@ -72,6 +72,11 @@ public class BankYML implements BankManagement
 	@Override
 	public boolean deposit(Player player, int amount)
 	{
+		if(amount == -1)
+		{
+			amount = player.getLevel();
+		}
+		
 		defineValues(player, amount);
 
 		if (accountOverflow > 0)
@@ -134,24 +139,7 @@ public class BankYML implements BankManagement
 		int lvl = player.getLevel();
 
 		defineValues(player, lvl);
-
-		if (lvl > maxDep)
-		{
-			deposit(player, maxDep);
-			return true;
-		}
-		else if (lvl <= maxDep && lvl >= minDep)
-		{
-			deposit(player, lvl);
-			return true;
-		}
-		else
-		{
-			player.sendMessage(ChatColor.RED
-					+ "The minimum amount to deposit is " + ChatColor.YELLOW
-					+ minDep + ChatColor.RED + " levels");
-			return false;
-		}
+		return deposit(player, maxDep);
 	}
 
 	// XXX withdraw(Player player, int amount)
@@ -162,7 +150,12 @@ public class BankYML implements BankManagement
 		{
 			return false;
 		}
-
+		
+		if(amount == -1)
+		{
+			amount = getBalance(player);
+		}
+		
 		playerName = player.getName();
 		world = player.getWorld().getName();
 		group = getGroup(world);
@@ -226,33 +219,12 @@ public class BankYML implements BankManagement
 	@Override
 	public boolean withdraw(Player player)
 	{
-		int balance = (int) getBalance(player);
-
 		String stringMaxWit = plugin.getConfig().getString(
 				"Account_Limits.Max_Withdraw");
-		String stringMinWit = plugin.getConfig().getString(
-				"Account_Limits.Min_Withdraw");
 
 		maxWit = Integer.parseInt(stringMaxWit);
-		minWit = Integer.parseInt(stringMinWit);
-
-		if (balance > maxWit)
-		{
-			withdraw(player, maxWit);
-			return true;
-		}
-		else if (balance <= maxWit && balance >= minWit)
-		{
-			withdraw(player, balance);
-			return true;
-		}
-		else
-		{
-			player.sendMessage(ChatColor.RED
-					+ "The minimum amount to withdraw is " + ChatColor.YELLOW
-					+ minWit + ChatColor.RED + " levels");
-			return false;
-		}
+		
+		return withdraw(player, maxWit);
 	}
 
 	// XXX getBalance(Player player)
@@ -339,7 +311,11 @@ public class BankYML implements BankManagement
 	@Override
 	public boolean checkDepositLimits(Player player, int amount)
 	{
-		if (amount < 0 && maxDep != -1 && minDep != -1)
+		if(amount == -1)
+		{
+			return true;
+		}
+		else if (amount < 0)
 		{
 			player.sendMessage(ChatColor.RED
 					+ "You cannot deposit a negative amount!");
@@ -366,9 +342,8 @@ public class BankYML implements BankManagement
 		else if (newBalance > allowedBalance)
 		{
 			player.sendMessage(ChatColor.RED
-					+ "Your balance would exceed the maximum allowed balance, which is: "
-					+ ChatColor.YELLOW + allowedBalance + ChatColor.RED
-					+ " levels");
+					+ "Your balance would exceed the maximum allowed balance, which is: " + 
+					ChatColor.YELLOW + allowedBalance + ChatColor.RED + " levels");
 			return false;
 		}
 		else
@@ -390,7 +365,11 @@ public class BankYML implements BankManagement
 		minWit = Integer.parseInt(stringMinWit);
 		maxWit = Integer.parseInt(stringMaxWit);
 
-		if (amount < 0 && maxWit != -1 && minWit != -1)
+		if(amount == -1)
+		{
+			return true;
+		}
+		else if (amount < 0)
 		{
 			player.sendMessage(ChatColor.RED
 					+ "You cannot withdraw a negative amount!");
