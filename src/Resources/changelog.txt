@@ -1,4 +1,7 @@
 ** CHANGELOG **
+CHANGELOG 0.4.6
+- Fixed unlimited values
+
 V0.4.5
 - Added timer for YML saver
 - Changed default values in config
