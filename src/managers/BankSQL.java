@@ -185,9 +185,15 @@ public class BankSQL implements BankManagement
 		
 		allowedPlayerLevel = Integer.parseInt(stringMaxPlayerLvl);
 		
-		if(player.getLevel() >= allowedPlayerLevel)
+		if(allowedPlayerLevel == -1)
 		{
-			player.sendMessage(ChatColor.YELLOW + "You have the allowed amount of levels. Use some before withdrawing more!");
+			allowedPlayerLevel = Integer.MAX_VALUE;
+		}
+		
+		if (player.getLevel() >= allowedPlayerLevel)
+		{
+			player.sendMessage(ChatColor.YELLOW
+					+ "You have the allowed amount of levels. Use some before withdrawing more!");
 			return false;
 		}
 		else if(newPlayerLevel > allowedPlayerLevel)

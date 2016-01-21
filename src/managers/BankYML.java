@@ -181,6 +181,11 @@ public class BankYML implements BankManagement
 				"Player_Limits.Max_Player_Level");
 
 		allowedPlayerLevel = Integer.parseInt(stringMaxPlayerLvl);
+		
+		if(allowedPlayerLevel == -1)
+		{
+			allowedPlayerLevel = Integer.MAX_VALUE;
+		}
 
 		if (player.getLevel() >= allowedPlayerLevel)
 		{
