@@ -1,7 +1,6 @@
 package creators;
 
 import java.io.File;
-import java.io.PrintWriter;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -19,6 +18,7 @@ public class GenerateFiles
 	}
 
 	//Generate the Configuration file, if it is not there
+	// XXX Config file
 	public void generateConfig()
 	{
 		File configFile = new File(plugin.getDataFolder() + File.separator + "config.yml");
@@ -42,34 +42,13 @@ public class GenerateFiles
 	//XXX Changelog file
 	public void generateChangelog()
 	{
-		try
-		{
-			PrintWriter writer = new PrintWriter((plugin.getDataFolder() + File.separator + "changelog.txt"), "UTF-8");
-			writer.println("** CHANGELOG **");
-			writer.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		plugin.saveResource("changelog.txt", true);
+		plugin.saveResource("Associated files/changelog.txt", true);
 	}
 	
 	//Generate Donators.txt
 	//XXX Donators file
 	public void generateDonators()
 	{
-		try
-		{
-			PrintWriter writer = new PrintWriter((plugin.getDataFolder() + File.separator + "Donators.txt"), "UTF-8");
-			writer.println("Donators");
-			writer.close();
-		}
-		catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		plugin.saveResource("Donators.txt", true);
+		plugin.saveResource("Associated files/Donators.txt", true);
 	}
 }

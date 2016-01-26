@@ -1,6 +1,8 @@
 ** CHANGELOG **
 CHANGELOG 0.4.6
 - Fixed unlimited values
+- Moved changelog and Donators files to seperate folder (Asosiated files)
+- Fixed double transaction on signs after plugin reload
 
 V0.4.5
 - Added timer for YML saver

@@ -416,8 +416,15 @@ public class BankSQL implements BankManagement
 				"Account_Limits.Max_Account_Balance");
 		
 		minDep = Integer.parseInt(stringMinDep);
-		maxDep = Integer.parseInt(stringMaxDep);newBalance = (getBalance(player) + amount);
+		maxDep = Integer.parseInt(stringMaxDep);
+		newBalance = (getBalance(player) + amount);
 		allowedBalance = Integer.parseInt(stringAllowedBalance);
+
+		if(allowedBalance == -1)
+		{
+			allowedBalance = Integer.MAX_VALUE;
+		}
+		
 		accountOverflow = (newBalance - allowedBalance);
 	}
 	

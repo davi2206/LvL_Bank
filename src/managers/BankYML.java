@@ -2,7 +2,6 @@ package managers;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -308,6 +307,12 @@ public class BankYML implements BankManagement
 		maxDep = Integer.parseInt(stringMaxDep);
 		newBalance = (getBalance(player) + amount);
 		allowedBalance = Integer.parseInt(stringAllowedBalance);
+		
+		if(allowedBalance == -1)
+		{
+			allowedBalance = Integer.MAX_VALUE;
+		}
+		
 		accountOverflow = (newBalance - allowedBalance);
 	}
 
