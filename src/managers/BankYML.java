@@ -39,7 +39,7 @@ public class BankYML implements BankManagement
 	private int allowedPlayerLevel;
 
 	// XXX Constructor WITH db
-	private BankYML(Plugin plugin)
+	protected BankYML(Plugin plugin)
 	{
 		this.plugin = plugin;
 

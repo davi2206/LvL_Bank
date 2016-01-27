@@ -91,8 +91,8 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		
 		if(useSql)
 		{
-			dbCon.validateCon();
 			dbCon = DbConnection.getInstance(this);
+			dbCon.validateCon();
 			dbCon.createTable();
 			dbCon.expandTable();
 			bank = BankSQL.getInstance(dbCon, this);
@@ -110,8 +110,18 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 	public void onDisable()
 	{
 		bm.save();
+		
 		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><> \n");
 		clog.sendMessage(ChatColor.RED + "Disabling LvL_Bank \n");
 		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><>");
+		
+		dbCon = null;
+		pCmds = null;
+		cCmds = null;
+		signManager = null;
+		bm = null;
+		genFiles = null;
+		fst = null;
+		clog = null;
 	}
 }

@@ -560,8 +560,5 @@ public class BankSQL implements BankManagement
 	}
 
 	@Override
-	public void save()
-	{
-		//DB connection is live saved
-	}
+	public void save() { /*DB connection is live saved*/ }
 }
