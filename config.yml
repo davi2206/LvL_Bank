@@ -1,8 +1,10 @@
 # # # # # # # # # # # # #
 #  --    LvL Bank    -- #
-#  -- Version: 0.4.7 -- #
 #  --  By: Davi2206  -- #
 # # # # # # # # # # # # #
+
+# Curent config version. !! Do NOT change !!
+Version: 0.4.7
 
 # Default SQL values
 MySQL:
