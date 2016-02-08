@@ -4,7 +4,7 @@
 # # # # # # # # # # # # #
 
 # Curent config version. !! Do NOT change !!
-Version: 0.4.7
+Version: 0.5
 
 # Default SQL values
 MySQL:

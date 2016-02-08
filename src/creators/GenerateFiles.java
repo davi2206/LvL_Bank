@@ -19,7 +19,7 @@ public class GenerateFiles
 
 	//Generate the Configuration file, if it is not there
 	// XXX Config file
-	public void generateConfig()
+	public void generateConfig(String curVersion)
 	{
 		File configFile = new File(plugin.getDataFolder() + File.separator + "config.yml");
 		
@@ -34,7 +34,26 @@ public class GenerateFiles
 		}
 		else
 		{
-			ccs.sendMessage(ChatColor.GREEN + "Config file already exists");
+			String version = plugin.getConfig().getString("Version");
+			
+			if(version.equalsIgnoreCase(curVersion))
+			{
+				ccs.sendMessage(ChatColor.GREEN + "Config file already exists");
+				ccs.sendMessage(ChatColor.GREEN + "Config version is " + version);
+			}
+			else
+			{
+				ccs.sendMessage(ChatColor.YELLOW + "Config file already exists, but is outdated!");
+				ccs.sendMessage(ChatColor.YELLOW + "Current config version is " + version);
+				ccs.sendMessage(ChatColor.YELLOW + "New config version is " + curVersion);
+				
+				ccs.sendMessage(ChatColor.GREEN + "New config will be generated!");
+				
+				File oldFile = new File(plugin.getDataFolder() + File.separator + "OLD config.yml");
+				configFile.renameTo(oldFile);
+				
+				generateConfig(curVersion);
+			}
 		}
 	}
 	
