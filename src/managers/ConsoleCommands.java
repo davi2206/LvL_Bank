@@ -7,6 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
+import Connection.Transfere;
+
 public class ConsoleCommands
 {
 	private Plugin plugin;
@@ -39,8 +41,36 @@ public class ConsoleCommands
 		this.sender = sender;
 
 		args = arguments.length;
-
-		// If lvl bank command
+		
+		// XXX If transfere to YML command
+		if(cmd.getName().equalsIgnoreCase("Transferetoyml"))
+		{
+			String sql = plugin.getConfig().getString("MySQL.use_SQL");
+			boolean useSql = Boolean.parseBoolean(sql);
+			
+			if(useSql)
+			{
+				Transfere tf = new Transfere(plugin);
+				if(tf.sendAllToFile())
+				{
+					sender.sendMessage(ChatColor.GREEN + "Data sent to YML file");
+					sender.sendMessage(ChatColor.YELLOW + "Reloading plugin!");
+					cmdReload(bm);
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.RED + "Unable to save data to file!");
+				}
+				tf = null;
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "The 'Use SQL' value in the config is FALSE!");
+				sender.sendMessage(ChatColor.RED + " Set it to true, and make sure the connection options are correct, and try again!");
+			}
+		}
+		
+		// XXX If lvl bank command
 		if (cmd.getName().equalsIgnoreCase("lvlBank"))
 		{
 			// XXX No arguments
