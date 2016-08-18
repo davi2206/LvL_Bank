@@ -53,7 +53,7 @@ public class BankYML implements BankManagement
 					.getConsoleSender()
 					.sendMessage(
 							ChatColor.RED
-									+ "Bank file or folder could not be created!");
+									+ "[LvL_Bank] Bank file or folder could not be created!");
 		}
 	}
 

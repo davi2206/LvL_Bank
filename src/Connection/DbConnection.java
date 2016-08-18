@@ -70,7 +70,7 @@ public class DbConnection
 		} 
 		catch (SQLException e) 
 		{
-			plugin.getLogger().info("Table already exists!");
+			plugin.getLogger().info("[LvL_Bank] Table already exists!");
 		}
 	}
 	

@@ -53,20 +53,20 @@ public class ConsoleCommands
 				Transfere tf = new Transfere(plugin);
 				if(tf.sendAllToFile())
 				{
-					sender.sendMessage(ChatColor.GREEN + "Data sent to YML file");
-					sender.sendMessage(ChatColor.YELLOW + "Reloading plugin!");
+					sender.sendMessage(ChatColor.GREEN + "[LvL_Bank] Data sent to YML file");
+					sender.sendMessage(ChatColor.YELLOW + "[LvL_Bank] Reloading plugin!");
 					cmdReload(bm);
 				}
 				else
 				{
-					sender.sendMessage(ChatColor.RED + "Unable to save data to file!");
+					sender.sendMessage(ChatColor.RED + "[LvL_Bank] Unable to save data to file!");
 				}
 				tf = null;
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "The 'Use SQL' value in the config is FALSE!");
-				sender.sendMessage(ChatColor.RED + " Set it to true, and make sure the connection options are correct, and try again!");
+				sender.sendMessage(ChatColor.RED + "[LvL_Bank] The 'Use SQL' value in the config is FALSE!");
+				sender.sendMessage(ChatColor.RED + "[LvL_Bank] Set it to true, and make sure the connection options are correct, and try again!");
 			}
 		}
 		
@@ -101,7 +101,7 @@ public class ConsoleCommands
 				}
 				else
 				{
-					sender.sendMessage(ChatColor.RED + "Unknown command!");
+					sender.sendMessage(ChatColor.RED + "[LvL_Bank] Unknown command!");
 					cmdHelp();
 				}
 			}
@@ -115,18 +115,18 @@ public class ConsoleCommands
 				}
 				else
 				{
-					sender.sendMessage(ChatColor.RED + "Unknown command!");
+					sender.sendMessage(ChatColor.RED + "[LvL_Bank] Unknown command!");
 					cmdHelp();
 				}
 			}
 			else if (args > 3)
 			{
-				sender.sendMessage(ChatColor.RED + "Too many arguments");
+				sender.sendMessage(ChatColor.RED + "[LvL_Bank] Too many arguments");
 				cmdHelp();
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "Unknown command");
+				sender.sendMessage(ChatColor.RED + "[LvL_Bank] Unknown command");
 				cmdHelp();
 			}
 		}
@@ -136,7 +136,7 @@ public class ConsoleCommands
 	// XXX cmdHelp
 	public void cmdHelp()
 	{
-		String allowedCmds = (ChatColor.BLUE + "The commands you can use are: \n");
+		String allowedCmds = (ChatColor.BLUE + "[LvL_Bank] The commands you can use are: \n");
 
 		if (sender.hasPermission(new Permissions().lvlBankReload))
 		{
@@ -158,7 +158,7 @@ public class ConsoleCommands
 		bm.save();
 		plugin.reloadConfig();
 		checkMinMaxValues();
-		sender.sendMessage(ChatColor.GREEN + "LvL_Bank reloaded!");
+		sender.sendMessage(ChatColor.GREEN + "[LvL_Bank] Reloaded!");
 	}
 
 	// XXX cmdLimits()
@@ -259,7 +259,7 @@ public class ConsoleCommands
 		catch (Exception e)
 		{
 			sender.sendMessage(ChatColor.RED
-					+ "There was an unexpected error. Ask an admin to check the console.");
+					+ "[LvL_Bank] There was an unexpected error. Ask an admin to check the console.");
 			e.printStackTrace();
 			return true;
 		}
@@ -295,16 +295,16 @@ public class ConsoleCommands
 		if (minDep > maxDep && (minDep != -1) && (maxDep != -1))
 		{
 			sender.sendMessage(ChatColor.RED
-					+ "The minimum deposit and withdraw amounts cannot be higher than the maximum amounts!");
-			sender.sendMessage(ChatColor.RED + "Plugin will be disabled");
+					+ "[LvL_Bank] The minimum deposit and withdraw amounts cannot be higher than the maximum amounts!");
+			sender.sendMessage(ChatColor.RED + "[LvL_Bank] Plugin will be disabled");
 			plugin.getPluginLoader().disablePlugin(plugin);
 			return false;
 		}
 		else if (minWit > maxWit && (minWit != -1) && (maxWit != -1))
 		{
 			sender.sendMessage(ChatColor.RED
-					+ "The minimum deposit and withdraw amounts cannot be higher than the maximum amounts!");
-			sender.sendMessage(ChatColor.RED + "Plugin will be disabled");
+					+ "[LvL_Bank] The minimum deposit and withdraw amounts cannot be higher than the maximum amounts!");
+			sender.sendMessage(ChatColor.RED + "[LvL_Bank] Plugin will be disabled");
 			plugin.getPluginLoader().disablePlugin(plugin);
 			return false;
 		}

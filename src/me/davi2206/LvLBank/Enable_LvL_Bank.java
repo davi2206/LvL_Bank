@@ -33,12 +33,14 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 	
 	private ConsoleCommandSender clog;
 	
-	private static final String curVersion = "0.5";
+	private String curVersion = "version";
 	
 	public void onEnable()
 	{
 		clog = this.getServer().getConsoleSender();
-		clog.sendMessage(ChatColor.BLUE + "LvL_Bank enabeling!");
+		clog.sendMessage(ChatColor.BLUE + "[LvL_Bank] Enabeling!");
+		
+		curVersion = this.getDescription().getVersion();
 		
 		genFiles = new GenerateFiles(this);
 		genFiles.generateConfig(curVersion);
@@ -57,7 +59,7 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		
 		cCmds.checkMinMaxValues();
 		
-		clog.sendMessage(ChatColor.GREEN + "LvL_Bank enabeled!");
+		clog.sendMessage(ChatColor.GREEN + "[LvL_Bank] Enabeled!");
 	}
 
 	//Receiving command input
@@ -114,7 +116,7 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 		bm.save();
 		
 		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><> \n");
-		clog.sendMessage(ChatColor.RED + "Disabling LvL_Bank \n");
+		clog.sendMessage(ChatColor.RED + "[LvL_Bank] Disabling \n");
 		clog.sendMessage(ChatColor.RED + "<><><><><><><><><><><><><><><>");
 		
 		dbCon = null;
