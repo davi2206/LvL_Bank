@@ -69,11 +69,4 @@ public class GenerateFiles
 	{
 		plugin.saveResource("Associated files/changelog.txt", true);
 	}
-	
-	//Generate Donators.txt
-	//XXX Donators file
-	public void generateDonators()
-	{
-		plugin.saveResource("Associated files/Donators.txt", true);
-	}
 }

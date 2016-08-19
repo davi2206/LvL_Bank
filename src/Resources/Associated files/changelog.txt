@@ -1,7 +1,6 @@
 ** CHANGELOG **
-CHANGELOG 0.4.8
-- Checks config version vs. plugin version
-- Generates new config, if update
+CHANGELOG 0.5
+- Updates config in needed
 
 CHANGELOG 0.4.7
 - Added command '/transferetoyml' to move data from SQL to YML file (Only works in Console!)
