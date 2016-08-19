@@ -131,6 +131,10 @@ public class SignManager implements Listener
 			{
 				place.setLine(1, ChatColor.BLUE + "Balance");
 			}
+			else if(place.getLine(1).equalsIgnoreCase("Help"))
+			{
+				place.setLine(1, ChatColor.YELLOW + "Help");
+			}
 			else
 			{
 				place.setCancelled(true);
@@ -239,6 +243,10 @@ public class SignManager implements Listener
 					}
 					sign.update();
 					return;
+				}
+				else if(sign.getLine(1).equals(ChatColor.YELLOW + "Help"))
+				{
+					player.performCommand("lvlBank help");
 				}
 			}
 		}

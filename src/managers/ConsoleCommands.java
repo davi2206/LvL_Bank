@@ -140,15 +140,15 @@ public class ConsoleCommands
 
 		if (sender.hasPermission(new Permissions().lvlBankReload))
 		{
-			allowedCmds += (ChatColor.YELLOW + "- /lvlBank reload \n");
+			allowedCmds += (ChatColor.YELLOW + "- lvlBank reload \n");
 		}
 
 		if (sender.hasPermission(new Permissions().lvlBankOther))
 		{
-			allowedCmds += (ChatColor.YELLOW + "- /lvlBank balance <player> <world> \n");
+			allowedCmds += (ChatColor.YELLOW + "- lvlBank balance <player> <world> \n");
 		}
 
-		allowedCmds += (ChatColor.YELLOW + "- /lvlBank limits");
+		allowedCmds += (ChatColor.YELLOW + "- lvlBank limits");
 		sender.sendMessage(allowedCmds);
 	}
 
