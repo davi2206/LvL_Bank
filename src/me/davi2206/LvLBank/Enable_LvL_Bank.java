@@ -33,17 +33,15 @@ public class Enable_LvL_Bank extends JavaPlugin implements Listener
 	
 	private ConsoleCommandSender clog;
 	
-	private String curVersion = "version";
+	private String configVersion = "0.5";
 	
 	public void onEnable()
 	{
 		clog = this.getServer().getConsoleSender();
 		clog.sendMessage(ChatColor.BLUE + "[LvL_Bank] Enabeling!");
 		
-		curVersion = this.getDescription().getVersion();
-		
 		genFiles = new GenerateFiles(this);
-		genFiles.generateConfig(curVersion);
+		genFiles.generateConfig(configVersion);
 		genFiles.generateChangelog();
 		genFiles.generateDonators();
 		

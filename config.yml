@@ -4,6 +4,7 @@
 # # # # # # # # # # # # #
 
 # Curent config version. !! Do NOT change !!
+# Developer must update this in code!
 Version: 0.5
 
 # Default SQL values
